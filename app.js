@@ -35,11 +35,22 @@ document.addEventListener('mousemove', (e) => {
     const x = e.clientX / window.innerWidth;
     const display = document.getElementById('display-center');
     const fLeft = document.getElementById('f-left');
-    if (!display || !fLeft) return;
+    if (!display) return;
     display.style.opacity = "1";
-    if (x < 0.20) { display.innerText = "ALEGRIA"; fLeft.style.opacity = "0"; }
-    else if (x < 0.40) { display.innerText = "DESCOBERTA"; fLeft.style.opacity = "0"; }
-    else if (x < 0.60) { display.innerText = "INTEGRIDADE"; fLeft.style.opacity = "0"; }
-    else if (x < 0.80) { display.innerText = "UNIFICAÇÃO"; fLeft.style.opacity = "0.4"; }
-    else { display.innerText = "ESCALA"; fLeft.style.opacity = "0"; }
+    if (x < 0.20) {
+        display.innerText = "ALEGRIA";
+        if (fLeft) fLeft.style.opacity = "0";
+    } else if (x < 0.40) {
+        display.innerText = "DESCOBERTA";
+        if (fLeft) fLeft.style.opacity = "0";
+    } else if (x < 0.60) {
+        display.innerText = "INTEGRIDADE";
+        if (fLeft) fLeft.style.opacity = "0";
+    } else if (x < 0.80) {
+        display.innerText = "UNIFICAÇÃO";
+        if (fLeft) fLeft.style.opacity = "0.4";
+    } else {
+        display.innerText = "ESCALA";
+        if (fLeft) fLeft.style.opacity = "0";
+    }
 });
