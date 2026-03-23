@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "echo 'Vetor 6174: Ready'"
+    "build": "echo Vetor 6174: Ready'"
   },
   "dependencies": {
     "@google/generative-ai": "latest",
