@@ -1,54 +1,45 @@
-let currentSeed = "6174-000000";
+let audioStarted = false;
+let audioFiles = { A6: 'audio_a6.mp3', B1: 'audio_b1.mp3', C7: 'audio_c7.mp3', D4: 'audio_d4.mp3' };
 
 async function initAll() {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    console.log("Sincronia iniciada.");
+    if (audioStarted) return;
+    audioStarted = true;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    playTrack(audioFiles.D4, ctx, 0.4);
+    setTimeout(() => playTrack(audioFiles.B1, ctx, 0.6), 8000);
+    setTimeout(() => playTrack(audioFiles.C7, ctx, 0.5), 16000);
+    geometryPulse();
+}
+
+function playTrack(url, ctx, vol) {
+    const audio = new Audio(url);
+    const source = ctx.createMediaElementSource(audio);
+    const gain = ctx.createGain();
+    gain.gain.value = vol;
+    source.connect(gain).connect(ctx.destination);
+    audio.play();
+}
+
+function geometryPulse() {
+    const t = Date.now() / 1000;
+    const s_t = Math.sin(2 * Math.PI * 0.125 * t);
+    const hexagon = document.querySelector('.hexagon');
+    if (hexagon) {
+        hexagon.style.opacity = 0.2 + (0.8 * (s_t + 1) / 2);
+        hexagon.style.transform = `scale(${1 + 0.05 * s_t}) rotate(${t * 3}deg)`;
+    }
+    requestAnimationFrame(geometryPulse);
 }
 
 document.addEventListener('mousemove', (e) => {
     const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-    updatePhase(x, y);
-});
-
-function updatePhase(x, y) {
+    const display = document.getElementById('display-center');
     const fLeft = document.getElementById('f-left');
-    const fRight = document.getElementById('f-right');
-    if (x < 0.3) { fLeft.style.opacity = "0.4"; } 
-    else { fLeft.style.opacity = "0"; }
-    if (x > 0.7) { fRight.style.opacity = "0.4"; }
-    else { fRight.style.opacity = "0"; }
-}
-
-async function sendIntent() {
-    const intent = document.getElementById('intent-input').value;
-    const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ seed: currentSeed, message: intent })
-    });
-    const data = await response.json();
-    document.getElementById('display-center').innerText = data.response;
-    document.getElementById('display-center').style.opacity = "1";
-}
-
-document.getElementById('intent-input').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendIntent();
+    if (!display || !fLeft) return;
+    display.style.opacity = "1";
+    if (x < 0.20) { display.innerText = "ALEGRIA"; fLeft.style.opacity = "0"; }
+    else if (x < 0.40) { display.innerText = "DESCOBERTA"; fLeft.style.opacity = "0"; }
+    else if (x < 0.60) { display.innerText = "INTEGRIDADE"; fLeft.style.opacity = "0"; }
+    else if (x < 0.80) { display.innerText = "UNIFICAÇÃO"; fLeft.style.opacity = "0.4"; }
+    else { display.innerText = "ESCALA"; fLeft.style.opacity = "0"; }
 });
-
-async function uploadFile(input) {
-    const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-        const base64Data = e.target.result.split(',')[1];
-        await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                seed: currentSeed, 
-                file: { name: file.name, data: base64Data, type: file.type } 
-            })
-        });
-    };
-    reader.readAsDataURL(file);
-}
