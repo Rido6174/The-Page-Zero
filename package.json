@@ -1,0 +1,15 @@
+{
+  "name": "the-page-zero",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Vetor 6174: Ready'"
+  },
+  "dependencies": {
+    "@google/generative-ai": "latest",
+    "@neondatabase/serverless": "latest",
+    "@aws-sdk/client-s3": "latest",
+    "@vercel/analytics": "latest",
+    "@vercel/speed-insights": "latest"
+  }
+}
