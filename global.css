@@ -1,45 +1,17 @@
-:root { --master-pulse: 8s; }
-
-body { 
-    background-color: #000; 
-    color: #fff; 
-    margin: 0; 
-    overflow: hidden; 
-    font-family: 'Inter', sans-serif;
-}
-
-.hexagon {
-    fill: none;
-    stroke: #E5E4E2;
-    stroke-width: 0.5;
-    animation: breathingPulse var(--master-pulse) ease-in-out infinite;
-}
-
-@keyframes breathingPulse {
-    0% { opacity: 0.1; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.02); }
-    100% { opacity: 0.1; transform: scale(1); }
-}
-
-footer {
+#hexagon-canvas {
     position: absolute;
-    bottom: 20px;
     width: 100%;
-    text-align: center;
-    font-size: 0.6rem;
-    letter-spacing: 2px;
-    opacity: 0.5;
+    height: 100%;
+    animation: breathing var(--pulse-duration) ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none; 
 }
 
-.formula-float {
-    position: absolute;
-    font-size: 0.5rem;
-    opacity: 0.2;
-    font-family: monospace;
-    animation: floatAnim 12s infinite alternate;
-}
-
-@keyframes floatAnim {
-    from { transform: translateY(0); }
-    to { transform: translateY(-20px); }
+#interface-overlay {
+    position: relative;
+    z-index: 10; 
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
 }
