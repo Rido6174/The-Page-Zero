@@ -4,12 +4,13 @@ function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     window.addEventListener('mousemove', (e) => { mouseX = (e.clientX / window.innerWidth) - 0.5; });
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 }
 function drawHex(scale, rot) {
     const x = canvas.width / 2, y = canvas.height / 2;
     const size = (window.innerHeight / 4.5) * scale;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.shadowBlur = 60 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.2)";
+    ctx.shadowBlur = 50 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.2)";
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
         const angle = (i * Math.PI / 3) + rot;
@@ -26,10 +27,14 @@ function animate() {
     rotation += 0.002 + (mouseX * 0.015);
     drawHex(1 + pulse * 0.05, rotation);
     audioIds.forEach((id, i) => {
-        const offset = (i / 4) * T;
-        const timeInCycle = (now + offset) % T;
-        const vol = Math.pow(Math.max(0, Math.sin((Math.PI * timeInCycle) / (T/4))), 4);
-        if (gains[id]) gains[id].gain.setTargetAtTime(vol * 0.3, now, 0.2);
+        const startTime = i * 2;
+        const timeInCycle = now % T;
+        let vol = 0;
+        if (timeInCycle >= startTime && timeInCycle < startTime + 2) {
+
+            vol = Math.sin(((timeInCycle - startTime) / 2) * Math.PI);
+        }
+        if (gains[id]) gains[id].gain.setTargetAtTime(vol * 0.4, now, 0.1);
     });
     requestAnimationFrame(animate);
 }
@@ -52,6 +57,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
         const val = e.target.value; e.target.value = '';
         const output = document.getElementById('output-stream');
         const seedBox = document.getElementById('seed-box');
+        output.textContent = "Convergindo...";
         try {
             const res = await fetch('/api/convergence', {
                 method: 'POST',
@@ -59,9 +65,13 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
                 body: JSON.stringify({ prompt: val })
             });
             const data = await res.json();
+            if (data.error) throw new Error(data.error);
             seedBox.textContent = `SEED: ${data.seed} | UTC: ${data.utc}`;
             output.textContent = data.message;
-        } catch (err) { seedBox.textContent = "AI CONNECTION ERROR"; }
+        } catch (err) { 
+            seedBox.textContent = "ERRO DE SINCRONIA";
+            output.textContent = "Verifica a GEMINI_API_KEY e faz Redeploy."; 
+        }
     }
 });
 window.initAll = initAll;
