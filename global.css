@@ -1,52 +1,30 @@
-:root {
-    --bg: #000;
-    --fg: #fff;
-    --pulse: 8s;
-}
+:root { --bg: #000; --fg: #fff; }
 * { box-sizing: border-box; cursor: crosshair; }
-body, html {
-    margin: 0; padding: 0;
-    background: var(--bg); color: var(--fg);
-    font-family: 'Courier New', monospace;
-    overflow: hidden; height: 100vh;
-    display: flex; justify-content: center; align-items: center;
+body, html { 
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
 }
-#hexagon-canvas {
-    position: absolute; z-index: 1;
-    width: 100%; height: 100%;
-    pointer-events: none;
+#bunker-container {
+    height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
 }
-#interface-overlay {
-    position: relative; z-index: 10;
-    width: 85%; max-width: 500px;
-    text-align: center;
-}
-#header-sync {
-    position: absolute; top: -150px; width: 100%;
-    letter-spacing: 12px; font-size: 0.7rem;
-    animation: flicker 6s infinite; opacity: 0.4;
-}
-#zero-core {
-    font-size: 3rem; margin-bottom: 30px;
-    letter-spacing: 20px; opacity: 0.9;
-}
+#hexagon-canvas { position: absolute; top: 0; left: 0; z-index: 1; }
+#interface-overlay { z-index: 10; width: 80%; max-width: 500px; text-align: center; }
+#zero-core { font-size: 2.5rem; letter-spacing: 15px; margin-bottom: 20px; opacity: 0.7; }
 input {
-    background: transparent; border: none;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    color: var(--fg); width: 100%; padding: 10px;
-    text-align: center; outline: none; letter-spacing: 2px;
+    background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
+    color: var(--fg); width: 100%; text-align: center; outline: none; letter-spacing: 3px;
 }
+#output-stream { height: 100px; overflow-y: auto; font-size: 0.8rem; margin-bottom: 20px; opacity: 0.6; }
 footer {
-    position: absolute; bottom: 40px; width: 100%;
-    text-align: center; font-size: 0.5rem;
-    letter-spacing: 4px; opacity: 0.3;
+    position: absolute; bottom: 50px; width: 100%; text-align: center;
+    font-size: 0.6rem; letter-spacing: 5px; opacity: 0.4;
 }
-@keyframes flicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.4; }
-    20%, 24%, 55% { opacity: 0.05; filter: blur(1px); }
+.footer-line { width: 40px; height: 1px; background: #fff; margin: 15px auto; }
+.flicker-text { animation: flick 4s infinite; letter-spacing: 10px; font-size: 0.7rem; margin-bottom: 40px; }
+@keyframes flick { 
+    0%, 18%, 22%, 50%, 100% { opacity: 0.5; } 
+    20%, 55% { opacity: 0.1; filter: blur(1px); }
 }
-.fade-in-text {
-    animation: fadeIn 3s forwards;
-    margin-top: 15px; font-size: 0.8rem;
-}
+.fade-in-text { animation: fadeIn 2s forwards; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
