@@ -1,38 +1,28 @@
-:root { --bg: #000; --fg: #fff; }
-* { box-sizing: border-box; cursor: crosshair; }
+:root { --bg: #000; --titanium: rgba(255,255,255,0.9); }
+* { box-sizing: border-box; cursor: crosshair; margin: 0; padding: 0; }
 body, html { 
-    margin: 0; background: var(--bg); color: var(--fg);
-    font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
+    background: var(--bg); color: #fff; font-family: 'Courier New', monospace;
+    overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center;
 }
-#bunker-container {
-    height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
+#bunker-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+#hexagon-canvas { position: absolute; z-index: 1; pointer-events: none; }
+#zero-core { 
+    position: absolute; z-index: 10; font-size: 2.5rem; letter-spacing: 15px; 
+    color: var(--titanium); font-weight: 300; pointer-events: none;
 }
-#hexagon-canvas { position: absolute; z-index: 1; width: 100%; height: 100%; }
-#interface-overlay { z-index: 10; width: 85%; max-width: 600px; text-align: center; }
-#header-sync { 
-    position: absolute; top: 10%; letter-spacing: 15px; 
-    font-size: 0.7rem; animation: flick 5s infinite; opacity: 0.5; 
-}
-#zero-core { font-size: 3rem; letter-spacing: 20px; margin-bottom: 20px; opacity: 0.8; }
-#seed-box { font-size: 0.5rem; color: #555; letter-spacing: 2px; margin-bottom: 10px; height: 15px; }
-#output-stream { 
-    height: 120px; overflow-y: auto; font-size: 0.85rem; 
-    margin-bottom: 25px; opacity: 0.7; line-height: 1.4;
-}
-input {
+#interface-overlay { position: absolute; bottom: 15%; width: 100%; text-align: center; z-index: 20; }
+input { 
     background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
-    color: var(--fg); width: 100%; text-align: center; outline: none; letter-spacing: 4px;
+    color: #fff; text-align: center; width: 300px; outline: none; letter-spacing: 5px; font-size: 0.8rem;
 }
-footer {
-    position: absolute; bottom: 40px; width: 100%; text-align: center;
-    font-size: 0.55rem; letter-spacing: 4px; opacity: 0.3;
+#seed-box { position: absolute; top: 10%; font-size: 0.6rem; color: #444; letter-spacing: 3px; width: 100%; text-align: center; }
+#output-stream { height: 80px; overflow-y: auto; font-size: 0.8rem; margin-bottom: 15px; opacity: 0.5; }
+footer { 
+    position: absolute; bottom: 40px; width: 100%; text-align: center; 
+    font-size: 0.6rem; opacity: 0.3; letter-spacing: 4px; 
 }
-.footer-line { width: 30px; height: 1px; background: #fff; margin: 10px auto; }
-@keyframes flick { 
-    0%, 18%, 22%, 53%, 100% { opacity: 0.5; } 
-    20%, 55% { opacity: 0.1; filter: blur(2px); }
-}
+.flicker-text { position: absolute; top: 18%; animation: flick 5s infinite; letter-spacing: 12px; font-size: 0.7rem; opacity: 0.5; }
+@keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.5; } 20%, 55% { opacity: 0.1; filter: blur(2px); } }
 .fade-in-text { animation: fadeIn 2s forwards; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .math-geo-label { position: absolute; bottom: 15px; right: 20px; font-size: 0.4rem; opacity: 0.2; letter-spacing: 2px; }
