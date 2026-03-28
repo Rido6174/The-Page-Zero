@@ -4,12 +4,13 @@ function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     window.addEventListener('mousemove', (e) => { mouseX = (e.clientX / window.innerWidth) - 0.5; });
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 }
 function drawHex(scale, rot) {
     const x = canvas.width / 2, y = canvas.height / 2;
     const size = (window.innerHeight / 4.8) * scale;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.shadowBlur = 40 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.15)";
+    ctx.shadowBlur = 60 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.2)";
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
         const angle = (i * Math.PI / 3) + rot;
@@ -26,9 +27,11 @@ function animate() {
     rotation += 0.002 + (mouseX * 0.012);
     drawHex(1 + pulse * 0.04, rotation);
     audioIds.forEach((id, i) => {
-        const offset = (i / 4) * T;
-        const timeInCycle = (now + offset) % T;
-        const vol = Math.pow(Math.max(0, Math.sin((Math.PI * timeInCycle) / (T/4))), 4);
+        const cyclePos = (now + (i * 2)) % T;
+        let vol = 0;
+        if (cyclePos < 2) {
+            vol = Math.pow(Math.sin((cyclePos / 2) * Math.PI), 4);
+        }
         if (gains[id]) gains[id].gain.setTargetAtTime(vol * 0.25, now, 0.2);
     });
     requestAnimationFrame(animate);
@@ -36,6 +39,7 @@ function animate() {
 async function initAll() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
         audioIds.forEach(id => {
             const el = document.getElementById(id);
             const src = audioCtx.createMediaElementSource(el);
@@ -60,7 +64,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
             const data = await res.json();
             seedBox.textContent = `SEED: ${data.seed} | UTC: ${data.utc}`;
             output.textContent = data.message;
-        } catch (err) { seedBox.textContent = "AI CONNECTION ERROR - CHECK DATABASE_URL"; }
+        } catch (err) { seedBox.textContent = "AI CONNECTION ERROR"; }
     }
 });
 window.initAll = initAll;
