@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "echo Vector 6174: Ready"
+    "build": "echo Building Hércules..."
   },
   "dependencies": {
-    "@google/generative-ai": "latest",
-    "@neondatabase/serverless": "latest",
-    "@vercel/analytics": "latest",
-    "@vercel/speed-insights": "latest"
+    "@google/generative-ai": "^0.3.0",
+    "@neondatabase/serverless": "^0.9.0"
   }
 }
