@@ -1,5 +1,10 @@
 {
-  "version": 2,
-  "framework": null,
-  "installCommand": "npm install"
+  "regions": ["fra1"],
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs20.x",
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
 }
