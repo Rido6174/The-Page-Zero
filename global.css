@@ -8,23 +8,31 @@ body, html {
     height: 100vh; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
 }
-#hexagon-canvas { position: absolute; top: 0; left: 0; z-index: 1; }
-#interface-overlay { z-index: 10; width: 80%; max-width: 500px; text-align: center; }
-#zero-core { font-size: 2.5rem; letter-spacing: 15px; margin-bottom: 20px; opacity: 0.7; }
+#hexagon-canvas { position: absolute; z-index: 1; width: 100%; height: 100%; }
+#interface-overlay { z-index: 10; width: 85%; max-width: 600px; text-align: center; }
+#header-sync { 
+    position: absolute; top: 10%; letter-spacing: 15px; 
+    font-size: 0.7rem; animation: flick 5s infinite; opacity: 0.5; 
+}
+#zero-core { font-size: 3rem; letter-spacing: 20px; margin-bottom: 20px; opacity: 0.8; }
+#seed-box { font-size: 0.5rem; color: #555; letter-spacing: 2px; margin-bottom: 10px; height: 15px; }
+#output-stream { 
+    height: 120px; overflow-y: auto; font-size: 0.85rem; 
+    margin-bottom: 25px; opacity: 0.7; line-height: 1.4;
+}
 input {
-    background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
-    color: var(--fg); width: 100%; text-align: center; outline: none; letter-spacing: 3px;
+    background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: var(--fg); width: 100%; text-align: center; outline: none; letter-spacing: 4px;
 }
-#output-stream { height: 100px; overflow-y: auto; font-size: 0.8rem; margin-bottom: 20px; opacity: 0.6; }
 footer {
-    position: absolute; bottom: 50px; width: 100%; text-align: center;
-    font-size: 0.6rem; letter-spacing: 5px; opacity: 0.4;
+    position: absolute; bottom: 40px; width: 100%; text-align: center;
+    font-size: 0.55rem; letter-spacing: 4px; opacity: 0.3;
 }
-.footer-line { width: 40px; height: 1px; background: #fff; margin: 15px auto; }
-.flicker-text { animation: flick 4s infinite; letter-spacing: 10px; font-size: 0.7rem; margin-bottom: 40px; }
+.footer-line { width: 30px; height: 1px; background: #fff; margin: 10px auto; }
 @keyframes flick { 
-    0%, 18%, 22%, 50%, 100% { opacity: 0.5; } 
-    20%, 55% { opacity: 0.1; filter: blur(1px); }
+    0%, 18%, 22%, 53%, 100% { opacity: 0.5; } 
+    20%, 55% { opacity: 0.1; filter: blur(2px); }
 }
 .fade-in-text { animation: fadeIn 2s forwards; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.math-geo-label { position: absolute; bottom: 15px; right: 20px; font-size: 0.4rem; opacity: 0.2; letter-spacing: 2px; }
