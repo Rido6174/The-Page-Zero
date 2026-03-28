@@ -1,46 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>0 | Synchrony of Convergence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG-6174 | The Page Zero</title>
+    <meta name="description" content="Majestosa Universalidade. O Ponto Zero da Convergência Humana e Tecnológica.">
+    <meta property="og:title" content="RG-6174 - Absolute Convergence">
+    <meta property="og:description" content="Anomalia na rede. Sincronização em 0.125 Hz.">
+    <meta property="og:image" content="/og-image.png">
+    <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="global.css">
 </head>
-<body onclick="initAll()">
-    <div class="halo"></div>
-    
-    <div style="position:absolute; width:100%; top:15%; display:flex; justify-content:space-around; font-size:0.6rem; opacity:0.3; letter-spacing:2px; color: #E5E4E2; font-family: monospace;">
-        <div>S(t) = A sin(ωt + φ)</div>
-        <div>R(V) = K sin(6V)</div>
-    </div>
-
-    <div id="display-center"></div>
-
-    <div class="origin">
-        <svg viewBox="0 0 100 100">
-            <polygon class="hexagon" points="50,10 84.6,30 84.6,70 50,90 15.4,70 15.4,30"/>
-        </svg>
-        <div id="zero-core">0</div>
-    </div>
-
-    <div id="f-left" class="formula-float" style="opacity:0; transition: opacity 4s;">Φ = (1 + √5) / 2</div>
-
-    <div class="input-container">
-        <div class="input-group">
-            <span class="label-text">INTENT</span>
-            <input type="text" id="intent-input" class="main-input" placeholder="...">
-        </div>
-        <div class="input-group">
-            <span class="label-text">PHASE SEED</span>
-            <input type="text" id="phase-input" class="main-input" value="6174-000000" readonly>
+<body>
+    <div id="bunker-container">
+        <canvas id="hexagon-canvas"></canvas>
+        <div id="interface-overlay">
+            <div id="output-stream"></div>
+            <input type="text" id="user-input" autofocus autocomplete="off">
         </div>
     </div>
-
-    <footer>
-        <p>Ricardo Gomes – 6174 Vector: Unlimited</p>
-        <div style="font-size:0.5rem; opacity:0.6; margin-top:5px;">Sound of Math & Geo ===</div>
-    </footer>
-
-    <script src="app.js"></script>
+    <audio id="freq-432" loop src="audio_a6.mp3"></audio>
+    <audio id="freq-528" loop src="audio_b1.mp3"></audio>
+    <script src="app.js" type="module"></script>
 </body>
 </html>
