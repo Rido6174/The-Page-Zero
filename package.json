@@ -8,7 +8,6 @@
   "dependencies": {
     "@google/generative-ai": "latest",
     "@neondatabase/serverless": "latest",
-    "@aws-sdk/client-s3": "latest",
     "@vercel/analytics": "latest",
     "@vercel/speed-insights": "latest"
   }
