@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RG-6174 | The Page Zero</title>
-    <meta name="description" content="Majestosa Universalidade. O Ponto Zero da Convergência Humana e Tecnológica.">
-    <meta property="og:title" content="RG-6174 - Absolute Convergence">
-    <meta property="og:description" content="Anomalia na rede. Sincronização em 0.125 Hz.">
-    <meta property="og:image" content="/og-image.png">
-    <meta name="robots" content="index, follow">
+    <title>0 | Synchrony of Convergence</title>
+    <meta name="description" content="The Page Zero - Majestosa Universalidade.">
     <link rel="stylesheet" href="global.css">
 </head>
-<body>
+<body onclick="initAll()">
     <div id="bunker-container">
+        <div id="header-sync" class="flicker-text">SYNCHRONY</div>
+        
         <canvas id="hexagon-canvas"></canvas>
+        
         <div id="interface-overlay">
             <div id="output-stream"></div>
-            <input type="text" id="user-input" autofocus autocomplete="off">
+            <div id="zero-core">0</div>
+            <input type="text" id="user-input" placeholder="A sintonia reside na tua convergência..." autofocus autocomplete="off">
         </div>
+
+        <footer>
+            <div class="footer-line"></div>
+            <p>SYNCHRONY OF CONVERGENCE | THE PAGE ZERO</p>
+            <p class="utc-clock">UTC 2026-03-28</p>
+        </footer>
     </div>
+
     <audio id="freq-432" loop src="audio_a6.mp3"></audio>
     <audio id="freq-528" loop src="audio_b1.mp3"></audio>
     <script src="app.js" type="module"></script>
