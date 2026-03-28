@@ -19,6 +19,7 @@ export default async function (req, res) {
     ['RG-6174', `${utcStr} | ${seed}`, { input: prompt, output: responseText }]);
     return res.status(200).json({ message: responseText, seed: seed, utc: utcStr });
   } catch (error) {
-    return res.status(500).json({ error: "Sincronia Interrompida" });
+    console.error("Erro na API:", error);
+    return res.status(500).json({ error: "Sincronia Interrompida: " + error.message });
   }
 }
