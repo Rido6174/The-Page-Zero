@@ -1,73 +1,52 @@
 :root {
-    --bg-color: #000000;
-    --core-color: #ffffff;
-    --pulse-duration: 8s;
+    --bg: #000;
+    --fg: #fff;
+    --pulse: 8s;
 }
-
-* { box-sizing: border-box; }
-
+* { box-sizing: border-box; cursor: crosshair; }
 body, html {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    color: var(--core-color);
-    font-family: 'Courier New', Courier, monospace;
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--fg);
+    font-family: 'Courier New', monospace;
+    overflow: hidden; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
 }
-
-#bunker-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 #hexagon-canvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    animation: breathing var(--pulse-duration) ease-in-out infinite;
-    z-index: 1;
+    position: absolute; z-index: 1;
+    width: 100%; height: 100%;
     pointer-events: none;
 }
-
 #interface-overlay {
-    position: relative;
-    z-index: 10;
-    width: 80%;
-    max-width: 600px;
+    position: relative; z-index: 10;
+    width: 85%; max-width: 500px;
     text-align: center;
 }
-
-@keyframes breathing {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.05); }
+#header-sync {
+    position: absolute; top: -150px; width: 100%;
+    letter-spacing: 12px; font-size: 0.7rem;
+    animation: flicker 6s infinite; opacity: 0.4;
 }
-
-input[type="text"] {
-    background: transparent;
-    border: none;
+#zero-core {
+    font-size: 3rem; margin-bottom: 30px;
+    letter-spacing: 20px; opacity: 0.9;
+}
+input {
+    background: transparent; border: none;
     border-bottom: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    outline: none;
-    letter-spacing: 2px;
+    color: var(--fg); width: 100%; padding: 10px;
+    text-align: center; outline: none; letter-spacing: 2px;
 }
-
 footer {
-    position: absolute;
-    bottom: 30px;
-    width: 100%;
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    opacity: 0.3;
+    position: absolute; bottom: 40px; width: 100%;
+    text-align: center; font-size: 0.5rem;
+    letter-spacing: 4px; opacity: 0.3;
 }
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.4; }
+    20%, 24%, 55% { opacity: 0.05; filter: blur(1px); }
+}
+.fade-in-text {
+    animation: fadeIn 3s forwards;
+    margin-top: 15px; font-size: 0.8rem;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
