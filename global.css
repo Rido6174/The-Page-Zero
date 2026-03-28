@@ -6,26 +6,25 @@ body, html {
     display: flex; align-items: center; justify-content: center;
 }
 #bunker-container { 
-    position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+    position: absolute; width: 100vw; height: 100vh;
     display: flex; align-items: center; justify-content: center;
 }
 #hexagon-canvas { position: absolute; z-index: 1; pointer-events: none; }
 #zero-core { 
     position: absolute; z-index: 10; font-size: 3.5rem; letter-spacing: 25px; 
     color: var(--titanium); font-weight: 300; pointer-events: none;
-    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    left: 50%; top: 50%; transform: translate(-50%, -50%); /* Centro Real */
 }
 #interface-overlay { 
     position: absolute; bottom: 15%; width: 100%; 
     display: flex; flex-direction: column; align-items: center; z-index: 20; 
 }
-#seed-box { position: absolute; top: 8%; font-size: 0.6rem; color: #444; letter-spacing: 3px; width: 100%; text-align: center; }
-#output-stream { height: 60px; font-size: 0.8rem; margin-bottom: 15px; opacity: 0.4; text-align: center; width: 80%; }
 input { 
     background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
     color: #fff; text-align: center; width: 320px; outline: none; letter-spacing: 5px; font-size: 0.8rem;
 }
-footer { position: absolute; bottom: 40px; font-size: 0.6rem; opacity: 0.2; letter-spacing: 4px; text-align: center; width: 100%; }
+#seed-box { position: absolute; top: 10%; font-size: 0.6rem; color: #444; letter-spacing: 3px; }
+#output-stream { height: 60px; font-size: 0.8rem; margin-bottom: 15px; opacity: 0.4; text-align: center; width: 80%; }
+footer { position: absolute; bottom: 40px; font-size: 0.5rem; opacity: 0.2; letter-spacing: 4px; text-align: center; width: 100%; }
 .flicker-text { position: absolute; top: 18%; animation: flick 5s infinite; letter-spacing: 15px; font-size: 0.7rem; opacity: 0.4; }
 @keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.4; } 20%, 55% { opacity: 0.1; } }
-.math-geo-label { position: absolute; bottom: 15px; right: 20px; font-size: 0.4rem; opacity: 0.2; letter-spacing: 2px; }
