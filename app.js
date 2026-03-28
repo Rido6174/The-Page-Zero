@@ -1,34 +1,64 @@
-import { handleProfiling } from './chat.js';
+const audioIds = ['freq-a6', 'freq-b1', 'freq-c7', 'freq-d4'];
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const sources = {};
+const gains = {};
 
-const outputStream = document.getElementById('output-stream');
-const userInput = document.getElementById('user-input');
-
-async function processStream(input) {
-    const response = await fetch('/api/convergence', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            prompt: input,
-            context: "TPZ_CORE_ACTIVE" 
-        })
-    });
+async function initAll() {
+    if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+    }
     
-    const data = await response.json();
-    renderOutput(data.message);
+    audioIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!sources[id]) {
+            sources[id] = audioContext.createMediaElementSource(el);
+            gains[id] = audioContext.createGain();
+            sources[id].connect(gains[id]).connect(audioContext.destination);
+            el.play();
+        }
+    });
+
+    pulse();
 }
 
-function renderOutput(text) {
-    const div = document.createElement('div');
-    div.className = 'fade-in-text';
-    div.textContent = text;
-    outputStream.appendChild(div);
+function pulse() {
+    const now = audioContext.currentTime;
+    const duration = 8; // 0.125 Hz
+    
+    audioIds.forEach((id, index) => {
+        const gain = gains[id].gain;
+        gain.setValueAtTime(0.1, now);
+        gain.exponentialRampToValueAtTime(0.5, now + duration / 2);
+        gain.exponentialRampToValueAtTime(0.1, now + duration);
+    });
+
+    setTimeout(pulse, duration * 1000);
 }
 
-userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && userInput.value.trim()) {
-        const val = userInput.value;
-        userInput.value = '';
-        processStream(val);
-        handleProfiling(e);
+async function sendToBunker(input) {
+    const stream = document.getElementById('output-stream');
+    try {
+        const response = await fetch('/api/convergence', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: input })
+        });
+        const data = await response.json();
+        const div = document.createElement('div');
+        div.className = 'fade-in-text';
+        div.textContent = data.message;
+        stream.appendChild(div);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+document.getElementById('user-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const val = e.target.value;
+        e.target.value = '';
+        sendToBunker(val);
     }
 });
+
+window.initAll = initAll;
