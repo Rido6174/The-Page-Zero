@@ -1,6 +1,5 @@
 {
   "version": 2,
   "regions": ["fra1", "sfo1", "sin1"],
-  "cleanUrls": true,
-  "framework": null
+  "installCommand": "npm install"
 }
