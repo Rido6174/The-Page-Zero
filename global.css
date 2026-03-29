@@ -8,23 +8,23 @@ header { position: absolute; top: 4%; width: 100%; text-align: center; pointer-e
 #horizon-interface { position: absolute; top: 18%; width: 100%; display: flex; align-items: center; justify-content: center; z-index: 5; pointer-events: none; }
 #horizon-line { position: absolute; width: 100%; height: 1px; background: rgba(255,255,255,0.6); }
 #horizon-zero-point { 
-    position: relative; font-size: 1.6rem; color: #fff; background: #000; padding: 0 15px; 
-    z-index: 6; text-shadow: 0 0 10px #fff; 
+    position: relative; font-size: 1.6rem; color: #fff; background: var(--bg); padding: 0 12px; 
+    z-index: 6; text-shadow: 0 0 15px #fff; 
 }
 #light-tube { 
-    position: absolute; width: 6px; left: 50%; transform: translateX(-50%);
-    top: 18.5%; height: 31.5%; 
-    background: linear-gradient(to top, rgba(255,255,255,0.95), rgba(255,255,255,0.05));
-    z-index: 2; opacity: 0.5; pointer-events: none;
+    position: absolute; width: 4px; left: 50%; transform: translateX(-50%);
+    top: 18%; height: 32%;
+    background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0.1));
+    z-index: 2; opacity: 0.4; pointer-events: none;
 }
-#solar-halo { 
-    position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 80%);
-    width: 300px; height: 300px; z-index: 1; animation: solarExpand 8s infinite ease-in-out; 
-}
-@keyframes solarExpand { 0%, 100% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(14); opacity: 0.4; } }
 #geometry-hub { position: relative; width: 600px; height: 600px; display: grid; place-items: center; z-index: 4; pointer-events: none; }
 #hexagon-canvas { position: absolute; z-index: 5; }
 #zero-core { position: absolute; z-index: 10; font-size: 2.5rem; color: #fff; text-shadow: 0 0 35px #fff; }
+#solar-halo { 
+    position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 80%);
+    width: 300px; height: 300px; z-index: 1; animation: solarExpand 8s infinite ease-in-out; 
+}
+@keyframes solarExpand { 0%, 100% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(15); opacity: 0.35; } }
 .chalk-text { position: absolute; font-family: 'Architects Daughter', cursive; font-size: 1.1rem; color: #fff; opacity: 0.8; z-index: 10; }
 #corner-top-left { top: 20px; left: 20px; }
 #corner-top-right { top: 20px; right: 20px; letter-spacing: 2px; }
@@ -41,8 +41,7 @@ header { position: absolute; top: 4%; width: 100%; text-align: center; pointer-e
 .input-box { width: 500px; border: 1px solid rgba(255,255,255,0.4); padding: 12px; background: rgba(0,0,0,0.8); display: flex; pointer-events: auto; }
 input { 
     background: transparent; border: none; color: #fff; text-align: center; width: 100%; 
-    outline: none; letter-spacing: 12px; font-size: 1.3rem; caret-color: #fff; 
-    pointer-events: auto;
+    outline: none; letter-spacing: 12px; font-size: 1.3rem; caret-color: #fff; pointer-events: auto;
 }
 #seed-box { width: 500px; padding: 15px; background: var(--gold-meta); color: #000; text-align: center; font-size: 1.25rem; letter-spacing: 8px; font-weight: 900; border-radius: 2px; }
 footer { position: absolute; bottom: 30px; width: 100%; text-align: center; font-size: 1rem; letter-spacing: 6px; opacity: 0.35; pointer-events: none; }
