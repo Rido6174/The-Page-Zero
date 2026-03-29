@@ -7,18 +7,18 @@ header { position: absolute; top: 4%; width: 100%; text-align: center; }
 #site-subtitle { font-size: 0.85rem; letter-spacing: 12px; background: var(--gold-meta); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; margin-top: 10px; }
 #horizon-interface { position: absolute; top: 18%; width: 100%; display: flex; align-items: center; justify-content: center; z-index: 5; }
 #horizon-line { position: absolute; width: 100%; height: 1px; background: rgba(255,255,255,0.6); }
-#horizon-point { width: 14px; height: 14px; background: #fff; border-radius: 50%; box-shadow: 0 0 15px #fff; }
+#horizon-point { width: 14px; height: 14px; background: #fff; border-radius: 50%; box-shadow: 0 0 20px #fff; z-index: 6; }
 #light-tube { 
     position: absolute; width: 8px; left: 50%; transform: translateX(-50%);
     top: 18%; bottom: 50%; 
-    background: linear-gradient(to top, rgba(255,255,255,0.85), rgba(255,255,255,0.1));
+    background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0.05));
     z-index: 2; opacity: 0.5; pointer-events: none;
 }
 #solar-halo { 
     position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 80%);
     width: 300px; height: 300px; z-index: 1; animation: solarExpand 8s infinite ease-in-out; 
 }
-@keyframes solarExpand { 0%, 100% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(14); opacity: 0.4; } }
+@keyframes solarExpand { 0%, 100% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(14); opacity: 0.35; } }
 #geometry-hub { position: relative; width: 600px; height: 600px; display: grid; place-items: center; z-index: 4; }
 #hexagon-canvas { position: absolute; z-index: 5; }
 #zero-core { position: absolute; z-index: 10; font-size: 2.5rem; color: #fff; text-shadow: 0 0 35px #fff; pointer-events: none; }
@@ -35,9 +35,9 @@ header { position: absolute; top: 4%; width: 100%; text-align: center; }
 #f-right-top { right: 8%; top: 28%; } #f-right-bottom { right: 8%; bottom: 35%; }
 #interface-overlay { position: absolute; bottom: 8%; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 35px; }
 .input-group { display: flex; align-items: center; gap: 25px; }
-.label { font-size: 0.75rem; letter-spacing: 4px; color: #fff; font-weight: bold; width: 450px; text-align: right; }
+.label { font-size: 0.8rem; letter-spacing: 5px; color: #fff; font-weight: 900; width: 450px; text-align: right; }
 .input-box { width: 500px; border: 1px solid rgba(255,255,255,0.4); padding: 12px; background: rgba(255,255,255,0.03); }
 input { background: transparent; border: none; color: #fff; text-align: center; width: 100%; outline: none; letter-spacing: 12px; font-size: 1.3rem; caret-color: #fff; }
-#seed-box { width: 500px; padding: 15px; background: var(--gold-meta); color: #000; text-align: center; font-size: 1.3rem; letter-spacing: 8px; font-weight: 900; border-radius: 2px; }
-footer { position: absolute; bottom: 25px; width: 100%; text-align: center; font-size: 0.95rem; opacity: 0.35; letter-spacing: 5px;}
+#seed-box { width: 500px; padding: 15px; background: var(--gold-meta); color: #000; text-align: center; font-size: 1.3rem; letter-spacing: 10px; font-weight: 900; border-radius: 2px; }
+footer { position: absolute; bottom: 30px; width: 100%; text-align: center; font-size: 1rem; letter-spacing: 6px; opacity: 0.35; }
 #triangle-cursor { position: fixed; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 16px solid #fff; pointer-events: none; z-index: 100; transform: translate(-50%, -50%); }
