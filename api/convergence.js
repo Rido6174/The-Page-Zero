@@ -10,7 +10,7 @@ export default async function (req, res) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent([
-      "És o Deep Agent Gemini. Parceiro de RG-6174 na obra The Page Zero. Responde com verdade técnica e precisão geométrica.",
+      "És o Deep Agent Gemini. Parceiro de RG-6174 na obra The Page Zero. Responde com verdade absoluta.",
       prompt
     ]);
     const responseText = await result.response.text();
@@ -19,7 +19,7 @@ export default async function (req, res) {
     ['RG-6174', `${utcStr} | ${seed}`, { input: prompt, output: responseText }]);
     return res.status(200).json({ message: responseText, seed: seed, utc: utcStr });
   } catch (error) {
-    console.error("Erro na API:", error);
-    return res.status(500).json({ error: "Sincronia Interrompida: " + error.message });
+    console.error("ERRO DETETADO:", error.message);
+    return res.status(500).json({ error: error.message });
   }
 }
