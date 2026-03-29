@@ -10,29 +10,79 @@ const pureFormulas = [
     "θ,ϕ∈[0,2π] (∣∣+{0})", "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "S (t) = A . sin(ωt+ϕ)",
     "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
 ];
-const cornerTopLeft = ["6894", "6404", "----", "5944", "5454", "4970"];
-const cornerBottomRight = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
-let currentTrack = 0, audioCtx, canvas, ctx, mouseX = 0, mouseY = 0, rotation = 0;
+const cornerLeft = ["6894", "6404", "----", "5944", "5454", "4970"];
+const passiveAI = {
+    "Child": "Magic is the first geometry.",
+    "Adolescent": "The patterns are calling you.",
+    "Administrator": "Bunker operational. Welcome, Arquiteto.",
+    "Academic": "The axiom is a manifest truth.",
+    "Investor": "Stability achieved. Scale invitable."
+};
+let currentTrack = 0, canvas, ctx, mouseX = 0, mouseY = 0, rotation = 0;
+let userProfile = "Child", interactionDepth = 0, startTime = Date.now();
+let chalkCanvas, chalkCtx, isInitialized = false;
 function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
     canvas.width = 750; canvas.height = 750;
-    const cursor = document.getElementById('triangle-cursor');
+    chalkCanvas = document.getElementById('chalk-canvas'); chalkCtx = chalkCanvas.getContext('2d');
+    chalkCanvas.width = 250; chalkCanvas.height = 250;
     window.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+        const cursor = document.getElementById('triangle-cursor');
+        if(cursor) { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }
         const rect = canvas.getBoundingClientRect();
         mouseX = (e.clientX - rect.left) - (rect.width / 2);
         mouseY = (e.clientY - rect.top) - (rect.height / 2);
+        updateProfiling(e);
     });
 }
-function drawHex(scale, rot, highlightIntensity) {
+function updateProfiling(e) {
+    interactionDepth++;
+    const speed = Math.abs(e.movementX) + Math.abs(e.movementY);
+    const timeSpent = (Date.now() - startTime) / 1000;
+
+    if (interactionDepth > 1000) userProfile = "Investor";
+    else if (interactionDepth > 500) userProfile = "Academic";
+    else if (speed > 120) userProfile = "Adolescent";
+    else userProfile = "Child";
+    const kLevel = Math.min(9, Math.floor(interactionDepth / 100));
+    document.getElementById('corner-top-right').textContent = `CLARITY: K${kLevel}`;
+    if (interactionDepth % 250 === 0) {
+        const box = document.getElementById('passive-ai-box');
+        box.textContent = passiveAI[userProfile]; box.style.opacity = 1;
+        setTimeout(() => box.style.opacity = 0, 4000);
+    }
+}
+async function drawChalkTriangles() {
+    const triangles = [
+        [{x:50,y:200}, {x:200,y:200}, {x:125,y:50}], [{x:30,y:180}, {x:150,y:210}, {x:100,y:40}],
+        [{x:40,y:50}, {x:40,y:200}, {x:180,y:200}], [{x:100,y:30}, {x:50,y:180}, {x:210,y:150}]
+    ];
+    for (let t of triangles) {
+        chalkCtx.clearRect(0, 0, 250, 250); chalkCtx.strokeStyle = "rgba(255,255,255,0.5)";
+        chalkCtx.setLineDash([4, 4]);
+        for (let i = 0; i < 3; i++) {
+            chalkCtx.beginPath(); chalkCtx.moveTo(t[i].x, t[i].y);
+            chalkCtx.lineTo(t[(i+1)%3].x, t[(i+1)%3].y); chalkCtx.stroke();
+            await new Promise(r => setTimeout(r, 600));
+        }
+        await new Promise(r => setTimeout(r, 3000));
+    }
+    chalkCtx.clearRect(0, 0, 250, 250); chalkCtx.setLineDash([]);
+    chalkCtx.strokeStyle = "#fff"; chalkCtx.shadowBlur = 15; chalkCtx.shadowColor = "#fff";
+    chalkCtx.beginPath(); chalkCtx.moveTo(125,50); chalkCtx.lineTo(50,200); chalkCtx.lineTo(200,200); chalkCtx.closePath(); chalkCtx.stroke();
+    chalkCtx.fillStyle = "#fff"; chalkCtx.font = "14px 'Gloria Hallelujah'";
+    chalkCtx.fillText("k1", 120, 40); chalkCtx.fillText("k2", 30, 215); chalkCtx.fillText("k3", 205, 215);
+    await new Promise(r => setTimeout(r, 4000)); drawChalkTriangles();
+}
+function drawHex(scale, rot, intensity) {
     const x = canvas.width/2, y = canvas.height/2, size = 230 * scale;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < 6; i++) {
         const a1 = (i * Math.PI / 3) + rot, a2 = ((i+1) * Math.PI / 3) + rot;
-        const p1 = { x: x + size * Math.cos(a1), y: y + size * Math.sin(a1) }, p2 = { x: x + size * Math.cos(a2), y: y + size * Math.sin(a2) };
-        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = `rgba(255, 255, 255, ${0.25 + highlightIntensity})`;
-        ctx.lineWidth = 1.5 + (highlightIntensity * 6); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x + size * Math.cos(a1), y + size * Math.sin(a1));
+        ctx.lineTo(x + size * Math.cos(a2), y + size * Math.sin(a2));
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.25 + intensity})`;
+        ctx.lineWidth = 1.5 + (intensity * 6); ctx.stroke();
     }
 }
 function animate() {
@@ -41,41 +91,29 @@ function animate() {
     rotation += 0.0008;
     const dist = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
     const highlight = (dist > 190 && dist < 280) ? 0.9 : 0;
-    const tube = document.getElementById('light-tube');
-    tube.style.opacity = (Math.abs(mouseX) < 25) ? "1" : "0.5";
+    document.getElementById('light-tube').style.opacity = (Math.abs(mouseX) < 25) ? "1" : "0.5";
     drawHex(1 + pulse * 0.08, rotation, highlight);
     requestAnimationFrame(animate);
 }
 function playProtocol() {
     const audio = document.getElementById(audioIds[currentTrack]);
-    audio.play();
-    audio.onended = () => { currentTrack = (currentTrack + 1) % audioIds.length; playProtocol(); };
+    if (audio) { audio.play(); audio.onended = () => { currentTrack = (currentTrack + 1) % audioIds.length; playProtocol(); }; }
 }
-function cycleCornerData() {
-    let tlIdx = 0, brIdx = 0;
+window.initAll = function() {
+    if(isInitialized) return; isInitialized = true;
+    initGeometry(); animate(); playProtocol(); drawChalkTriangles();
     setInterval(() => {
-        document.getElementById('corner-top-left').textContent = cornerTopLeft[tlIdx];
-        tlIdx = (tlIdx + 1) % cornerTopLeft.length;
-        document.getElementById('corner-bottom-right').textContent = cornerBottomRight[brIdx];
-        brIdx = (brIdx + 1) % cornerBottomRight.length;
+        document.getElementById('corner-top-left').textContent = cornerLeft[Math.floor(Date.now()/4000) % cornerLeft.length];
+        const utc = new Date().toUTCString().split(' ')[4].substring(0, 5);
+        document.getElementById('corner-bottom-right').textContent = `0 (UTC ${utc})`;
     }, 4000);
-}
-function cycleFormulas() {
-    const areas = ['f-left-top', 'f-left-bottom', 'f-right-top', 'f-right-bottom'];
-    areas.forEach(id => {
-        const el = document.getElementById(id);
-        const update = () => {
-            el.textContent = pureFormulas[Math.floor(Math.random() * pureFormulas.length)];
-            el.classList.add('visible');
-            setTimeout(() => { el.classList.remove('visible'); }, 2000);
-        };
-        setTimeout(update, Math.random() * 8000);
-    });
-    setTimeout(cycleFormulas, 10000);
-}
-setInterval(() => {
-    const now = new Date();
-    document.getElementById('corner-top-right').textContent = `UTC ${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')}`;
-}, 1000);
-async function initAll() { initGeometry(); animate(); playProtocol(); cycleCornerData(); cycleFormulas(); }
-window.initAll = initAll;
+};
+document.getElementById('user-input').addEventListener('keypress', async (e) => {
+    if (e.key === 'Enter') {
+        const val = e.target.value; e.target.value = '';
+        const res = await fetch('/api/convergence', { method: 'POST', body: JSON.stringify({ prompt: val }) });
+        const data = await res.json();
+        const utc = new Date().toUTCString().split(' ')[4].substring(0, 5);
+        document.getElementById('seed-box').textContent = `${data.seed} - UTC ${utc}`;
+    }
+});
