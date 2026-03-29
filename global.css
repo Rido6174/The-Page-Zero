@@ -5,36 +5,37 @@ body, html {
     overflow: hidden; height: 100vh; width: 100vw;
 }
 #bunker-container { 
-    position: relative; width: 100vw; height: 100vh;
+    position: relative; width: 100%; height: 100%;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-#geometry-wrapper {
+#geometry-hub {
     position: relative; width: 600px; height: 600px;
-    display: flex; align-items: center; justify-content: center;
+    display: grid; place-items: center;
 }
-#hexagon-canvas { position: absolute; z-index: 1; filter: drop-shadow(0 0 50px rgba(255,255,255,0.2)); }
+#hexagon-canvas { position: absolute; z-index: 1; filter: drop-shadow(0 0 40px rgba(255,255,255,0.15)); }
 #zero-core { 
-    position: absolute; z-index: 10; font-size: 4.5rem; letter-spacing: 30px; 
-    color: var(--titanium); font-weight: 300; pointer-events: none;
-    text-shadow: 0 0 35px rgba(255,255,255,0.8);
-    margin-left: 15px; 
+    position: relative; z-index: 10; font-size: 5rem; letter-spacing: 20px; 
+    color: var(--titanium); font-weight: 200; pointer-events: none;
+    text-shadow: 0 0 30px rgba(255,255,255,0.8);
+    margin-left: 20px;
 }
 #interface-overlay { 
-    position: absolute; bottom: 8%; width: 100%; 
+    position: absolute; bottom: 10%; width: 100%; 
     display: flex; flex-direction: column; align-items: center; z-index: 20; 
 }
-#seed-box { font-size: 0.6rem; color: #555; letter-spacing: 5px; margin-bottom: 15px; text-transform: uppercase; }
+#seed-box { font-size: 0.6rem; color: #444; letter-spacing: 4px; margin-bottom: 20px; }
 #output-stream { 
-    height: 100px; width: 85%; max-width: 700px; font-size: 0.9rem; 
-    margin-bottom: 25px; opacity: 0.6; text-align: center; line-height: 1.6;
-    overflow-y: auto;
+    height: 80px; width: 80%; max-width: 600px; font-size: 0.9rem; 
+    margin-bottom: 30px; opacity: 0.5; text-align: center; overflow-y: auto;
 }
-.input-field-wrapper { width: 450px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 5px; }
+.input-container {
+    width: 450px; padding: 15px; border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02); border-radius: 2px;
+}
 input { 
-    background: transparent; border: none; color: #fff; 
-    text-align: center; width: 100%; outline: none; letter-spacing: 10px; font-size: 1.1rem;
+    background: transparent; border: none; color: #fff; text-align: center; 
+    width: 100%; outline: none; letter-spacing: 10px; font-size: 1.1rem;
 }
-footer { position: absolute; bottom: 30px; font-size: 0.55rem; opacity: 0.2; letter-spacing: 6px; text-align: center; width: 100%; }
-.flicker-text { position: absolute; top: 12%; animation: flick 5s infinite; letter-spacing: 25px; font-size: 0.8rem; opacity: 0.5; }
-@keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.5; } 20%, 55% { opacity: 0.05; filter: blur(4px); } }
-.math-geo-label { position: absolute; bottom: 15px; right: 30px; font-size: 0.45rem; opacity: 0.15; letter-spacing: 4px; }
+footer { position: absolute; bottom: 30px; font-size: 0.5rem; opacity: 0.2; letter-spacing: 6px; }
+.flicker-text { position: absolute; top: 15%; animation: flick 5s infinite; letter-spacing: 25px; }
+@keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.4; } 20%, 55% { opacity: 0.05; filter: blur(3px); } }
