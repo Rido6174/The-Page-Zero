@@ -9,6 +9,9 @@
 </head>
 <body onclick="initAll()">
     <div id="bunker-container">
+        <div id="corner-top-left" class="chalk-text"></div>
+        <div id="corner-top-right" class="chalk-text">UTC 00:00</div>
+        <div id="corner-bottom-right" class="chalk-text"></div>
         <header>
             <h1 id="site-title">THE PAGE ZERO</h1>
             <h2 id="site-subtitle">Synchrony of Convergence</h2>
@@ -23,19 +26,20 @@
         <div id="f-right-bottom" class="formula-display"></div>
         <div id="geometry-hub">
             <div id="light-tube"></div> 
-            <div id="solar-halo"></div> <canvas id="hexagon-canvas"></canvas>
+            <div id="solar-halo"></div> 
+            <canvas id="hexagon-canvas"></canvas>
             <div id="zero-core">0</div>
         </div>
         <div id="triangle-cursor"></div>
         <div id="interface-overlay">
             <div class="input-group">
-                <span class="label">SPEAK WITH ME.</span>
+                <span class="label">YOU SAY:</span>
                 <div class="input-box">
-                    <input type="text" id="user-input" placeholder="" autofocus autocomplete="off">
+                    <input type="text" id="user-input" placeholder=" " autofocus autocomplete="off">
                 </div>
             </div>
             <div class="input-group">
-                <span class="label">SAVE THIS SEED FOR YOUR NEXT VISIT.</span>
+                <span class="label">WRITE THIS DOWN, THIS SEED MARKS YOUR FUTURE RETURN.</span>
                 <div id="seed-box">6174-XXXXXX</div>
             </div>
         </div>
@@ -44,9 +48,9 @@
         </footer>
     </div>
     <audio id="freq-a6" src="audio_a6.mp3"></audio>
+    <audio id="freq-d4" src="audio_d4.mp3"></audio>
     <audio id="freq-b1" src="audio_b1.mp3"></audio>
     <audio id="freq-c7" src="audio_c7.mp3"></audio>
-    <audio id="freq-d4" src="audio_d4.mp3"></audio>
     <script src="app.js" type="module"></script>
 </body>
 </html>
