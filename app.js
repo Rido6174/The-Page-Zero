@@ -7,7 +7,7 @@ function initGeometry() {
 }
 function drawHex(scale, rot) {
     const x = canvas.width / 2, y = canvas.height / 2;
-    const size = 220 * scale;
+    const size = 230 * scale;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.shadowBlur = 100 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.3)";
     ctx.beginPath();
@@ -16,8 +16,8 @@ function drawHex(scale, rot) {
         ctx.lineTo(x + size * Math.cos(angle), y + size * Math.sin(angle));
     }
     ctx.closePath();
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.25 + (scale * 0.45)})`;
-    ctx.lineWidth = 1.3; ctx.stroke();
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 + (scale * 0.5)})`;
+    ctx.lineWidth = 1.4; ctx.stroke();
 }
 function animate() {
     if (!audioCtx) return;
@@ -25,12 +25,9 @@ function animate() {
     const pulse = (Math.sin(2 * Math.PI * now / T) + 1) / 2;
     rotation += 0.002 + (mouseX * 0.02);
     drawHex(1 + pulse * 0.1, rotation);
-    const timeInCycle = now % T;
-    audioIds.forEach((id, i) => {
-        const start = i * 2; 
-        const isCurrent = (timeInCycle >= start && timeInCycle < start + 2);
-        const vol = isCurrent ? 0.45 : 0;
-        if (gains[id]) gains[id].gain.setTargetAtTime(vol, now, 0.1);
+    audioIds.forEach((id) => {
+        const vol = 0.35 + (pulse * 0.15);
+        if (gains[id]) gains[id].gain.setTargetAtTime(vol, now, 0.2);
     });
     requestAnimationFrame(animate);
 }
@@ -41,7 +38,7 @@ async function initAll() {
         audioIds.forEach(id => {
             const el = document.getElementById(id);
             const src = audioCtx.createMediaElementSource(el);
-            gains[id] = audioCtx.createGain(); gains[id].gain.value = 0;
+            gains[id] = audioCtx.createGain(); gains[id].gain.value = 0.4;
             src.connect(gains[id]).connect(audioCtx.destination);
             el.play();
         });
@@ -53,7 +50,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
         const val = e.target.value; e.target.value = '';
         const output = document.getElementById('output-stream');
         const seedBox = document.getElementById('seed-box');
-        output.textContent = "CONVERGINDO...";
+        output.textContent = "Convergindo...";
         try {
             const res = await fetch('/api/convergence', {
                 method: 'POST',
@@ -65,7 +62,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
             output.textContent = data.message;
         } catch (err) { 
             seedBox.textContent = "SINAL INTERROMPIDO";
-            output.textContent = "ERRO 500: Verifica a conexão com o Neon no Vercel."; 
+            output.textContent = "Erro na conexão com o servidor. Tenta novamente."; 
         }
     }
 });
