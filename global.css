@@ -7,11 +7,7 @@ header { position: absolute; top: 4%; text-align: center; }
 #site-subtitle { font-size: 0.85rem; letter-spacing: 12px; background: var(--gold-meta); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; margin-top: 10px; }
 #horizon-interface { position: absolute; top: 18%; width: 100%; display: flex; align-items: center; justify-content: center; z-index: 5; }
 #horizon-line { position: absolute; width: 100%; height: 1px; background: rgba(255,255,255,0.7); }
-#horizon-zero { 
-    position: relative; color: #fff; font-size: 1.6rem; 
-    background: transparent;
-    z-index: 6; 
-}
+#horizon-zero { position: relative; color: #fff; font-size: 1.6rem; background: transparent; z-index: 6; }
 #light-tube { 
     position: absolute; width: 8px; left: 50%; transform: translateX(-50%);
     top: 18%; bottom: 50%; 
@@ -23,18 +19,21 @@ header { position: absolute; top: 4%; text-align: center; }
     width: 300px; height: 300px; z-index: 1; animation: solarExpand 8s infinite ease-in-out; 
 }
 @keyframes solarExpand { 0%, 100% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(14); opacity: 0.35; } }
-#triangle-animation-zone { position: absolute; bottom: 80px; left: 40px; width: 250px; height: 250px; }
-#chalk-canvas { width: 100%; height: 100%; }
-#passive-ai-output { position: absolute; top: 60%; width: 300px; text-align: center; font-size: 0.8rem; opacity: 0.4; color: #fff; }
-.chalk-text { position: absolute; font-family: 'Gloria Hallelujah', cursive; font-size: 1.1rem; color: #fff; z-index: 10; opacity: 0.8; }
-#corner-top-left { top: 20px; left: 20px; }
-#corner-top-right { top: 20px; right: 20px; letter-spacing: 2px; }
-#corner-bottom-right { bottom: 80px; right: 20px; }
+#chalk-study-zone { position: absolute; bottom: 100px; left: 50px; width: 200px; height: 200px; }
+.formula-display { 
+    position: absolute; font-family: 'Gloria Hallelujah', cursive; font-size: 1.6rem; 
+    color: rgba(255,255,255,0.6); opacity: 0; transition: opacity 3s ease; 
+}
+.formula-display.visible { opacity: 1; }
+#f-left-top { left: 5%; top: 25%; } #f-left-bottom { left: 5%; bottom: 30%; }
+#f-right-top { right: 5%; top: 25%; } #f-right-bottom { right: 5%; bottom: 30%; }
 #interface-overlay { position: absolute; bottom: 8%; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 40px; }
 .label { font-size: 0.8rem; letter-spacing: 5px; color: #fff; font-weight: 900; width: 450px; text-align: right; }
-.input-box { width: 500px; border: 1px solid rgba(255,255,255,0.5); padding: 12px; background: rgba(255,255,255,0.03); }
+.input-box { width: 500px; border: 1px solid rgba(255,255,255,0.4); padding: 12px; background: rgba(255,255,255,0.02); }
 input { background: transparent; border: none; color: #fff; text-align: center; width: 100%; outline: none; letter-spacing: 12px; font-size: 1.3rem; caret-color: #fff; }
-#seed-box { width: 500px; padding: 15px; background: var(--gold-meta); color: #000; text-align: center; font-size: 1.2rem; letter-spacing: 6px; font-weight: 900; border-radius: 2px; }
-
+#seed-box { 
+    width: 500px; padding: 15px; background: var(--gold-meta); color: #000; 
+    text-align: center; font-size: 1.2rem; letter-spacing: 6px; font-weight: 900; 
+}
 footer { position: absolute; bottom: 30px; width: 100%; text-align: center; font-size: 1rem; letter-spacing: 6px; opacity: 0.4; }
 #triangle-cursor { position: fixed; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 15px solid #fff; pointer-events: none; z-index: 100; transform: translate(-50%, -50%); }
