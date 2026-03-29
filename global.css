@@ -9,24 +9,21 @@ body, html {
     position: absolute; width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
 }
-#hexagon-canvas { position: absolute; z-index: 1; pointer-events: none; }
+#hexagon-canvas { position: absolute; z-index: 1; pointer-events: none; filter: drop-shadow(0 0 30px rgba(255,255,255,0.2)); }
 #zero-core { 
-    position: absolute; z-index: 10; font-size: 3.5rem; letter-spacing: 25px; 
+    position: absolute; z-index: 10; font-size: 4rem; letter-spacing: 30px; 
     color: var(--titanium); font-weight: 300; pointer-events: none;
     left: 50%; top: 50%; transform: translate(-50%, -50%);
-    text-shadow: 0 0 20px rgba(255,255,255,0.4); /* O Halo do Zero */
+    text-shadow: 0 0 25px rgba(255,255,255,0.6);
 }
-#interface-overlay { 
-    position: absolute; bottom: 12%; width: 100%; 
-    display: flex; flex-direction: column; align-items: center; z-index: 20; 
-}
-#seed-box { position: absolute; top: 8%; font-size: 0.6rem; color: #444; letter-spacing: 4px; width: 100%; text-align: center; }
-#output-stream { height: 60px; font-size: 0.8rem; margin-bottom: 20px; opacity: 0.5; text-align: center; width: 85%; max-width: 600px; }
+#interface-overlay { position: absolute; bottom: 12%; width: 100%; display: flex; flex-direction: column; align-items: center; z-index: 20; }
+#seed-box { position: absolute; top: 8%; font-size: 0.6rem; color: #444; letter-spacing: 5px; width: 100%; text-align: center; }
+#output-stream { height: 60px; font-size: 0.85rem; margin-bottom: 20px; opacity: 0.5; text-align: center; width: 80%; }
 input { 
-    background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.15);
-    color: #fff; text-align: center; width: 380px; outline: none; letter-spacing: 6px; font-size: 0.9rem;
+    background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
+    color: #fff; text-align: center; width: 400px; outline: none; letter-spacing: 8px; font-size: 0.9rem;
 }
-footer { position: absolute; bottom: 35px; font-size: 0.55rem; opacity: 0.25; letter-spacing: 5px; text-align: center; width: 100%; line-height: 2; }
-.flicker-text { position: absolute; top: 18%; animation: flick 6s infinite; letter-spacing: 18px; font-size: 0.75rem; opacity: 0.4; }
-@keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.4; } 20%, 55% { opacity: 0.05; filter: blur(2px); } }
+footer { position: absolute; bottom: 30px; font-size: 0.55rem; opacity: 0.2; letter-spacing: 5px; text-align: center; width: 100%; }
+.flicker-text { position: absolute; top: 15%; animation: flick 5s infinite; letter-spacing: 20px; font-size: 0.7rem; opacity: 0.4; }
+@keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.4; } 20%, 55% { opacity: 0.05; filter: blur(3px); } }
 .math-geo-label { position: absolute; bottom: 15px; right: 25px; font-size: 0.45rem; opacity: 0.15; letter-spacing: 3px; }
