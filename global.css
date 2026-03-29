@@ -12,22 +12,21 @@ body, html {
     position: relative; width: 600px; height: 600px;
     display: flex; align-items: center; justify-content: center;
 }
-#hexagon-canvas { position: absolute; z-index: 1; pointer-events: none; filter: drop-shadow(0 0 50px rgba(255,255,255,0.25)); }
+#hexagon-canvas { position: absolute; z-index: 1; filter: drop-shadow(0 0 60px rgba(255,255,255,0.25)); }
 #zero-core { 
     position: absolute; z-index: 10; font-size: 5rem; letter-spacing: 25px; 
     color: var(--titanium); font-weight: 200; pointer-events: none;
-    left: 50%; top: 50%; transform: translate(-50%, -50%);
-    text-shadow: 0 0 45px rgba(255,255,255,0.9);
+    text-shadow: 0 0 50px rgba(255,255,255,0.9);
     margin-left: 20px;
 }
 #interface-overlay { 
     position: absolute; bottom: 8%; width: 100%; 
     display: flex; flex-direction: column; align-items: center; z-index: 20; 
 }
-#seed-box { font-size: 0.6rem; color: #555; letter-spacing: 5px; margin-bottom: 15px; text-transform: uppercase; }
+#seed-box { font-size: 0.6rem; color: #555; letter-spacing: 6px; margin-bottom: 20px; text-transform: uppercase; }
 #output-stream { 
-    height: 100px; width: 85%; max-width: 700px; font-size: 0.95rem; 
-    margin-bottom: 25px; opacity: 0.7; text-align: center; line-height: 1.8;
+    height: 100px; width: 85%; max-width: 800px; font-size: 0.95rem; 
+    margin-bottom: 30px; opacity: 0.7; text-align: center; line-height: 1.8;
 }
 .input-bunker-wrapper {
     width: 500px; padding: 20px; border: 1px solid rgba(255,255,255,0.1);
