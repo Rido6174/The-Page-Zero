@@ -30,7 +30,7 @@ function animate() {
         const time = now % T;
         let vol = 0;
         if (time >= start && time < start + 2) {
-            vol = Math.pow(Math.sin(((time - start) / 2) * Math.PI), 8); // Lucidez absoluta
+            vol = Math.pow(Math.sin(((time - start) / 2) * Math.PI), 8);
         }
         if (gains[id]) gains[id].gain.setTargetAtTime(vol * 0.3, now, 0.15);
     });
