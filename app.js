@@ -12,7 +12,7 @@ const pureFormulas = [
 const cornerLeftValues = ["6894", "6404", "----", "5944", "5454", "4970"];
 const cornerRightValues = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
 let currentTrack = 0, canvas, ctx, mouseX = 0, mouseY = 0, rotation = 0;
-let interactionDepth = 0, isInitialized = false, chalkCanvas, chalkCtx;
+let isInitialized = false, chalkCanvas, chalkCtx;
 function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
     canvas.width = 750; canvas.height = 750;
@@ -29,6 +29,7 @@ function initGeometry() {
 async function drawChalkStudies() {
     const tris = [[{x:50,y:180},{x:200,y:180},{x:125,y:50}], [{x:30,y:160},{x:140,y:190},{x:90,y:40}], [{x:40,y:40},{x:40,y:180},{x:170,y:180}], [{x:90,y:20},{x:40,y:160},{x:180,y:140}]];
     for (let t of tris) {
+        if(!chalkCtx) return;
         chalkCtx.clearRect(0,0,250,250); chalkCtx.strokeStyle = "rgba(255,255,255,0.45)";
         chalkCtx.setLineDash([4,4]); chalkCtx.lineWidth = 1.3;
         for (let i=0; i<3; i++) {
@@ -45,6 +46,7 @@ async function drawChalkStudies() {
     await new Promise(r => setTimeout(r, 4000)); drawChalkStudies();
 }
 function drawHex(scale, rot, intensity) {
+    if(!ctx) return;
     const x = canvas.width/2, y = canvas.height/2, size = 230 * scale;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < 6; i++) {
@@ -61,8 +63,6 @@ function animate() {
     rotation += 0.0008;
     const dist = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
     const highlight = (dist > 190 && dist < 280) ? 0.9 : 0;
-    const tube = document.getElementById('light-tube');
-    if(tube) tube.style.opacity = (Math.abs(mouseX) < 30) ? "1" : "0.5";
     drawHex(1 + pulse * 0.08, rotation, highlight);
     requestAnimationFrame(animate);
 }
@@ -73,7 +73,12 @@ function playSequencer() {
 function updateClock() {
     const now = new Date();
     const h = String(now.getUTCHours()).padStart(2,'0'), m = String(now.getUTCMinutes()).padStart(2,'0');
-    document.getElementById('corner-top-right').textContent = `UTC ${h}:${m}`;
+    const timeStr = `UTC ${h}:${m}`;
+    document.getElementById('corner-top-right').textContent = timeStr;
+    const sBox = document.getElementById('seed-box');
+    if (sBox.textContent.includes('XXXXXXXX')) {
+        sBox.textContent = `6174 - XXXXXXXX - ${timeStr}`;
+    }
 }
 window.initAll = function() {
     if(isInitialized) return; 
@@ -82,9 +87,9 @@ window.initAll = function() {
     setInterval(() => {
         document.getElementById('corner-top-left').textContent = cornerLeftValues[Math.floor(Date.now()/4000) % cornerLeftValues.length];
         document.getElementById('corner-bottom-right').textContent = cornerRightValues[Math.floor(Date.now()/4000) % cornerRightValues.length];
-        updateClock();
     }, 4000);
     setInterval(updateClock, 1000);
+    updateClock();
     cycleFormulas();
 };
 function cycleFormulas() {
@@ -104,7 +109,8 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
         const val = e.target.value; e.target.value = '';
         const res = await fetch('/api/convergence', { method: 'POST', body: JSON.stringify({ prompt: val }) });
         const data = await res.json();
-        const utc = new Date().toUTCString().split(' ')[4].substring(0, 5);
-        document.getElementById('seed-box').textContent = `${data.seed} - UTC ${utc}`;
+        const now = new Date();
+        const timeStr = `UTC ${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')}`;
+        document.getElementById('seed-box').textContent = `${data.seed} - ${timeStr}`;
     }
 });
