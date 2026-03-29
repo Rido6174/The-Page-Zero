@@ -5,12 +5,12 @@ const pureFormulas = [
     "y(t) = b* (t + sin(t) + e^(k*(t/2π)) * sin(t))", "D (k, r, t) = ρ(t)⋅[H(k,r)+H0(k)]⋅dtdB⋅Θ(ΔH (t))",
     "T= (∣∣− {0}) S(t)", "Αἰών =(∣∣−{0})S(t)∩= ρ + Χρόνος + Triskelion + Ω = ρ= S (0)=sin(0)=0",
     "Χρόνος= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
-    "Ω= S(1)=sin(2π)=0(∣∣+{0})", "(∣∣− {0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅cos(θ)",
+    "Ω= S(1)=sin(2π)=0(∣∣+{0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅cos(θ)",
     "Y (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅sin(θ)", "Z (θ, ϕ) ∩=Ksin(nϕ) sin(ϕ) (∣∣+ {0})",
-    "θ,ϕ∈[0,2π] (∣∣+{0})", "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
+    "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
 ];
-const cornerLeftValues = ["6894", "6404", "----", "5944", "5454", "4970"];
-const cornerRightValues = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
+const cornerLeft = ["6404", "5944", "----", "5454", "6894", "4970"];
+const cornerRight = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
 let currentTrack = 0, canvas, ctx, mouseX = 0, mouseY = 0, rotation = 0;
 let isInitialized = false, chalkCanvas, chalkCtx;
 function initGeometry() {
@@ -41,7 +41,7 @@ async function drawChalkStudies() {
     }
     chalkCtx.clearRect(0,0,250,250); chalkCtx.setLineDash([]); chalkCtx.strokeStyle="#fff"; chalkCtx.shadowBlur=15; chalkCtx.shadowColor="#fff";
     chalkCtx.beginPath(); chalkCtx.moveTo(125,50); chalkCtx.lineTo(50,200); chalkCtx.lineTo(200,200); chalkCtx.closePath(); chalkCtx.stroke();
-    chalkCtx.fillStyle="#fff"; chalkCtx.font="14px 'Architects Daughter'";
+    chalkCtx.font="14px 'Architects Daughter'"; chalkCtx.fillStyle="#fff";
     chalkCtx.fillText("k1", 120, 40); chalkCtx.fillText("k2", 30, 215); chalkCtx.fillText("k3", 205, 215);
     await new Promise(r => setTimeout(r, 4000)); drawChalkStudies();
 }
@@ -63,6 +63,8 @@ function animate() {
     rotation += 0.0008;
     const dist = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
     const highlight = (dist > 190 && dist < 280) ? 0.9 : 0;
+    const tube = document.getElementById('light-tube');
+    if(tube) tube.style.opacity = (Math.abs(mouseX) < 35) ? "1" : "0.5";
     drawHex(1 + pulse * 0.08, rotation, highlight);
     requestAnimationFrame(animate);
 }
@@ -79,12 +81,11 @@ function updateClock() {
     if (sBox && sBox.textContent.includes('XXXXXXXX')) { sBox.textContent = `6174 - XXXXXXXX - ${timeStr}`; }
 }
 window.initAll = function() {
-    if(isInitialized) return; 
-    isInitialized = true;
+    if(isInitialized) return; isInitialized = true;
     initGeometry(); animate(); playSequencer(); drawChalkStudies();
     setInterval(() => {
-        document.getElementById('corner-top-left').textContent = cornerLeftValues[Math.floor(Date.now()/4000) % cornerLeftValues.length];
-        document.getElementById('corner-bottom-right').textContent = cornerRightValues[Math.floor(Date.now()/4000) % cornerRightValues.length];
+        document.getElementById('corner-top-left').textContent = cornerLeft[Math.floor(Date.now()/4000) % cornerLeft.length];
+        document.getElementById('corner-bottom-right').textContent = cornerRight[Math.floor(Date.now()/4000) % cornerRight.length];
     }, 4000);
     setInterval(updateClock, 1000);
     updateClock();
@@ -94,12 +95,9 @@ window.initAll = function() {
             const el = document.getElementById(id);
             el.textContent = pureFormulas[Math.floor(Math.random() * pureFormulas.length)];
             el.classList.add('visible');
-            setTimeout(() => { 
-                el.classList.remove('visible'); 
-                setTimeout(cycle, 1000 + Math.random() * 2000);
-            }, 4000);
+            setTimeout(() => { el.classList.remove('visible'); setTimeout(cycle, 1500 + Math.random() * 2000); }, 4000);
         };
-        setTimeout(cycle, index * 1500);
+        setTimeout(cycle, index * 1000);
     });
 };
 document.getElementById('user-input').addEventListener('keypress', async (e) => {
