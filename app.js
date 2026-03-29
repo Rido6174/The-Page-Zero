@@ -2,29 +2,29 @@ const audioIds = ['freq-a6', 'freq-b1', 'freq-c7', 'freq-d4'];
 let audioCtx, gains = {}, canvas, ctx, mouseX = 0, rotation = 0;
 function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
-    canvas.width = 600; canvas.height = 600;
+    canvas.width = 700; canvas.height = 700;
     window.addEventListener('mousemove', (e) => { mouseX = (e.clientX / window.innerWidth) - 0.5; });
 }
 function drawHex(scale, rot) {
     const x = canvas.width / 2, y = canvas.height / 2;
-    const size = 200 * scale;
+    const size = 220 * scale;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.shadowBlur = 80 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.3)";
+    ctx.shadowBlur = 100 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.35)";
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
         const angle = (i * Math.PI / 3) + rot;
         ctx.lineTo(x + size * Math.cos(angle), y + size * Math.sin(angle));
     }
     ctx.closePath();
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 + (scale * 0.4)})`;
-    ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.25 + (scale * 0.45)})`;
+    ctx.lineWidth = 1.3; ctx.stroke();
 }
 function animate() {
     if (!audioCtx) return;
     const now = audioCtx.currentTime; const T = 8;
     const pulse = (Math.sin(2 * Math.PI * now / T) + 1) / 2;
-    rotation += 0.002 + (mouseX * 0.015);
-    drawHex(1 + pulse * 0.08, rotation);
+    rotation += 0.002 + (mouseX * 0.02);
+    drawHex(1 + pulse * 0.1, rotation);
     audioIds.forEach((id, i) => {
         const start = i * 2;
         const time = now % T;
@@ -55,7 +55,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
         const val = e.target.value; e.target.value = '';
         const output = document.getElementById('output-stream');
         const seedBox = document.getElementById('seed-box');
-        output.textContent = "CONVERGINDO...";
+        output.textContent = "...";
         try {
             const res = await fetch('/api/convergence', {
                 method: 'POST',
@@ -63,9 +63,13 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
                 body: JSON.stringify({ prompt: val })
             });
             const data = await res.json();
+            if (data.error) throw new Error(data.error);
             seedBox.textContent = `SEED: ${data.seed} | UTC: ${data.utc}`;
             output.textContent = data.message;
-        } catch (err) { seedBox.textContent = "ERRO DE SINCRONIA"; }
+        } catch (err) { 
+            seedBox.textContent = "CONVERGENCE ERROR";
+            output.textContent = "Verifica a Consola do Browser."; 
+        }
     }
 });
 window.initAll = initAll;
