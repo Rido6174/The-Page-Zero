@@ -7,13 +7,17 @@ const pureFormulas = [
     "Χρόνος= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
     "Ω= S(1)=sin(2π)=0(∣∣+{0})", "(∣∣− {0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅cos(θ)",
     "Y (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅sin(θ)", "Z (θ, ϕ) ∩=Ksin(nϕ) sin(ϕ) (∣∣+ {0})",
-    "θ,ϕ∈[0,2π] (∣∣+{0})", "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
+    "θ,ϕ∈[0,2π] (∣∣+{0})", "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "S (t) = A . sin(ωt+ϕ)",
+    "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
 ];
 const cornerLeftValues = ["6894", "6404", "----", "5944", "5454", "4970"];
 const cornerRightValues = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
-const passiveAI = { "Child": "Magic is the first geometry.", "Adolescent": "The patterns call you.", "Administrator": "Bunker operational.", "Academic": "Axioms are truth.", "Investor": "Scale inevitable." };
+const passiveAI = { 
+    "Child": "Magic is the first geometry.", "Adolescent": "The patterns call you.", 
+    "Administrator": "Bunker operational. Welcome Arquiteto.", "Academic": "Axioms are truth.", "Investor": "Scale inevitable." 
+};
 let currentTrack = 0, canvas, ctx, mouseX = 0, mouseY = 0, rotation = 0;
-let userProfile = "Child", interactionCount = 0, startTime = Date.now(), isInitialized = false;
+let userProfile = "Child", interactionDepth = 0, startTime = Date.now(), isInitialized = false;
 let chalkCanvas, chalkCtx;
 function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
@@ -30,16 +34,17 @@ function initGeometry() {
     });
 }
 function updateProfiling(e) {
-    interactionCount++;
+    interactionDepth++;
     const speed = Math.abs(e.movementX) + Math.abs(e.movementY);
-    if (interactionCount > 1000) userProfile = "Investor";
-    else if (interactionCount > 500) userProfile = "Academic";
+    const timeSpent = (Date.now() - startTime) / 1000;
+    if (interactionDepth > 1000) userProfile = "Investor";
+    else if (interactionDepth > 500) userProfile = "Academic";
     else if (speed > 130) userProfile = "Adolescent";
     else userProfile = "Child";
-    const kLevel = Math.min(9, Math.floor(interactionCount / 120));
-    const clar = document.getElementById('clarity-label');
-    if(clar) clar.textContent = `CLARITY: K${kLevel}`;
-    if (interactionCount > 0 && interactionCount % 250 === 0) {
+    const now = new Date();
+    const utcTime = `${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')}`;
+    document.getElementById('corner-top-right').textContent = `UTC ${utcTime}`;
+    if (interactionDepth > 0 && interactionDepth % 250 === 0) {
         const box = document.getElementById('passive-ai-box');
         if(box) { box.textContent = passiveAI[userProfile]; box.style.opacity = 1; setTimeout(() => box.style.opacity = 0, 4000); }
     }
@@ -84,19 +89,16 @@ function animate() {
     drawHex(1 + pulse * 0.08, rotation, highlight);
     requestAnimationFrame(animate);
 }
-function playProtocol() {
+function playSequencer() {
     const audio = document.getElementById(audioIds[currentTrack]);
-    if (audio) { audio.play().catch(e => {}); audio.onended = () => { currentTrack = (currentTrack + 1) % audioIds.length; playProtocol(); }; }
+    if (audio) { audio.play().catch(e => {}); audio.onended = () => { currentTrack = (currentTrack + 1) % audioIds.length; playSequencer(); }; }
 }
 window.initAll = function() {
     if(isInitialized) return; isInitialized = true;
-    initGeometry(); animate(); playProtocol(); drawChalkStudies();
+    initGeometry(); animate(); playSequencer(); drawChalkStudies();
     setInterval(() => {
         document.getElementById('corner-top-left').textContent = cornerLeftValues[Math.floor(Date.now()/4000) % cornerLeftValues.length];
         document.getElementById('corner-bottom-right').textContent = cornerRightValues[Math.floor(Date.now()/4000) % cornerRightValues.length];
-        const now = new Date();
-        const h = String(now.getUTCHours()).padStart(2,'0'), m = String(now.getUTCMinutes()).padStart(2,'0');
-        document.getElementById('corner-top-right').textContent = `UTC ${h}:${m}`;
     }, 4000);
     cycleFormulas();
 };
