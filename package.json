@@ -1,12 +1,9 @@
 {
   "name": "the-page-zero",
   "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "build": "echo Vector GO"
-  },
+  "main": "index.js",
   "dependencies": {
-    "@google/generative-ai": "latest",
-    "@neondatabase/serverless": "latest"
+    "@google/generative-ai": "^0.3.0",
+    "@neondatabase/serverless": "^0.9.0"
   }
 }
