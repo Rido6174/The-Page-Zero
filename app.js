@@ -3,17 +3,17 @@ const pureFormulas = [
     "S (t) = sin (2πt), t ∈ [0,1]", "Ω = π. ∞", "S(t) = A . sin(ωt + φ)", 
     "R(V) = K . sin(n . V)  [n=6]", "x(t) = a* (t + sin(t) + e^(k*(t/2π)) * cos(t))",
     "y(t) = b* (t + sin(t) + e^(k*(t/2π)) * sin(t))", "D (k, r, t) = ρ(t)⋅[H(k,r)+H0(k)]⋅dtdB⋅Θ(ΔH (t))",
-    "T= (∣∣− {0}) S(t)", "Αἰών =(∣∣−{0})S(t)∩= ρ + Χρόnos + Triskelion + Ω = ρ= S (0)=sin(0)=0",
-    "Χρόnos= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
+    "T= (∣∣− {0}) S(t)", "Αἰών =(∣∣−{0})S(t)∩= ρ + Χρόνος + Triskelion + Ω = ρ= S (0)=sin(0)=0",
+    "Χρόνος= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
     "Ω= S(1)=sin(2π)=0(∣∣+{0})", "(∣∣− {0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅cos(θ)",
     "Y (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅sin(θ)", "Z (θ, ϕ) ∩=Ksin(nϕ) sin(ϕ) (∣∣+ {0})",
     "θ,ϕ∈[0,2π] (∣∣+{0})", "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
 ];
-const cornerTopLeft = ["6894", "6404", "----", "5944", "5454", "4970"];
-const cornerBottomRight = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
-const passiveMessages = { "Child": "Magic is the first geometry.", "Adolescent": "Patterns call you.", "Administrator": "Bunker active.", "Academic": "Axioms defined.", "Investor": "Scale confirmed." };
+const cornerLeftValues = ["6894", "6404", "----", "5944", "5454", "4970"];
+const cornerRightValues = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
+const passiveAI = { "Child": "Magic is the first geometry.", "Adolescent": "The patterns call you.", "Administrator": "Bunker operational.", "Academic": "Axioms are truth.", "Investor": "Scale inevitable." };
 let currentTrack = 0, canvas, ctx, mouseX = 0, mouseY = 0, rotation = 0;
-let userProfile = "Child", interactionDepth = 0, startTime = Date.now(), isInitialized = false;
+let userProfile = "Child", interactionCount = 0, startTime = Date.now(), isInitialized = false;
 let chalkCanvas, chalkCtx;
 function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
@@ -30,21 +30,21 @@ function initGeometry() {
     });
 }
 function updateProfiling(e) {
-    interactionDepth++;
+    interactionCount++;
     const speed = Math.abs(e.movementX) + Math.abs(e.movementY);
-    if (interactionDepth > 1000) userProfile = "Investor";
-    else if (interactionDepth > 500) userProfile = "Academic";
+    if (interactionCount > 1000) userProfile = "Investor";
+    else if (interactionCount > 500) userProfile = "Academic";
     else if (speed > 130) userProfile = "Adolescent";
     else userProfile = "Child";
-    const kLevel = Math.min(9, Math.floor(interactionDepth / 120));
-    document.getElementById('corner-top-right').textContent = `CLARITY: K${kLevel}`;
-    if (interactionDepth % 250 === 0) {
+    const kLevel = Math.min(9, Math.floor(interactionCount / 120));
+    const clar = document.getElementById('clarity-label');
+    if(clar) clar.textContent = `CLARITY: K${kLevel}`;
+    if (interactionCount > 0 && interactionCount % 250 === 0) {
         const box = document.getElementById('passive-ai-box');
-        box.textContent = passiveMessages[userProfile]; box.style.opacity = 1;
-        setTimeout(() => box.style.opacity = 0, 4000);
+        if(box) { box.textContent = passiveAI[userProfile]; box.style.opacity = 1; setTimeout(() => box.style.opacity = 0, 4000); }
     }
 }
-async function drawChalkTriangles() {
+async function drawChalkStudies() {
     const tris = [[{x:50,y:180},{x:200,y:180},{x:125,y:50}], [{x:30,y:160},{x:140,y:190},{x:90,y:40}], [{x:40,y:40},{x:40,y:180},{x:170,y:180}], [{x:90,y:20},{x:40,y:160},{x:180,y:140}]];
     for (let t of tris) {
         chalkCtx.clearRect(0,0,250,250); chalkCtx.strokeStyle = "rgba(255,255,255,0.45)";
@@ -60,7 +60,7 @@ async function drawChalkTriangles() {
     chalkCtx.beginPath(); chalkCtx.moveTo(125,50); chalkCtx.lineTo(50,200); chalkCtx.lineTo(200,200); chalkCtx.closePath(); chalkCtx.stroke();
     chalkCtx.fillStyle="#fff"; chalkCtx.font="14px 'Gloria Hallelujah'";
     chalkCtx.fillText("k1", 120, 40); chalkCtx.fillText("k2", 30, 215); chalkCtx.fillText("k3", 205, 215);
-    await new Promise(r => setTimeout(r, 4000)); drawChalkTriangles();
+    await new Promise(r => setTimeout(r, 4000)); drawChalkStudies();
 }
 function drawHex(scale, rot, intensity) {
     const x = canvas.width/2, y = canvas.height/2, size = 230 * scale;
@@ -84,17 +84,18 @@ function animate() {
     drawHex(1 + pulse * 0.08, rotation, highlight);
     requestAnimationFrame(animate);
 }
-function playSequencer() {
+function playProtocol() {
     const audio = document.getElementById(audioIds[currentTrack]);
-    if (audio) { audio.play().catch(e => console.log("Awake...")); audio.onended = () => { currentTrack = (currentTrack + 1) % audioIds.length; playSequencer(); }; }
+    if (audio) { audio.play().catch(e => {}); audio.onended = () => { currentTrack = (currentTrack + 1) % audioIds.length; playProtocol(); }; }
 }
 window.initAll = function() {
     if(isInitialized) return; isInitialized = true;
-    initGeometry(); animate(); playSequencer(); drawChalkTriangles();
+    initGeometry(); animate(); playProtocol(); drawChalkStudies();
     setInterval(() => {
-        document.getElementById('corner-top-left').textContent = cornerTopLeft[Math.floor(Date.now()/4000) % cornerTopLeft.length];
-        document.getElementById('corner-bottom-right').textContent = cornerBottomRight[Math.floor(Date.now()/4000) % cornerBottomRight.length];
-        const h = String(new Date().getUTCHours()).padStart(2,'0'), m = String(new Date().getUTCMinutes()).padStart(2,'0');
+        document.getElementById('corner-top-left').textContent = cornerLeftValues[Math.floor(Date.now()/4000) % cornerLeftValues.length];
+        document.getElementById('corner-bottom-right').textContent = cornerRightValues[Math.floor(Date.now()/4000) % cornerRightValues.length];
+        const now = new Date();
+        const h = String(now.getUTCHours()).padStart(2,'0'), m = String(now.getUTCMinutes()).padStart(2,'0');
         document.getElementById('corner-top-right').textContent = `UTC ${h}:${m}`;
     }, 4000);
     cycleFormulas();
@@ -114,7 +115,7 @@ function cycleFormulas() {
 document.getElementById('user-input').addEventListener('keypress', async (e) => {
     if (e.key === 'Enter') {
         const val = e.target.value; e.target.value = '';
-        if (val.toUpperCase() === 'RG-6174') { userProfile = "Administrator"; document.getElementById('bunker-container').classList.add('bunker-active'); return; }
+        if (val.toUpperCase() === 'RG-6174') { document.getElementById('bunker-container').classList.add('bunker-active'); return; }
         const res = await fetch('/api/convergence', { method: 'POST', body: JSON.stringify({ prompt: val }) });
         const data = await res.json();
         const utc = new Date().toUTCString().split(' ')[4].substring(0, 5);
