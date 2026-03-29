@@ -4,36 +4,35 @@ function initGeometry() {
     canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     window.addEventListener('mousemove', (e) => { mouseX = (e.clientX / window.innerWidth) - 0.5; });
-    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 }
 function drawHex(scale, rot) {
     const x = canvas.width / 2, y = canvas.height / 2;
-    const size = (window.innerHeight / 4.6) * scale;
+    const size = (window.innerHeight / 4.4) * scale;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.shadowBlur = 70 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.3)"; // Halo Real
+    ctx.shadowBlur = 80 * scale; ctx.shadowColor = "rgba(255, 255, 255, 0.25)";
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
         const angle = (i * Math.PI / 3) + rot;
         ctx.lineTo(x + size * Math.cos(angle), y + size * Math.sin(angle));
     }
     ctx.closePath();
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 + (scale * 0.4)})`;
-    ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 + (scale * 0.4)})`;
+    ctx.lineWidth = 1; ctx.stroke();
 }
 function animate() {
     if (!audioCtx) return;
     const now = audioCtx.currentTime; const T = 8;
     const pulse = (Math.sin(2 * Math.PI * now / T) + 1) / 2;
-    rotation += 0.0015 + (mouseX * 0.01);
-    drawHex(1 + pulse * 0.06, rotation);
+    rotation += 0.002 + (mouseX * 0.015);
+    drawHex(1 + pulse * 0.07, rotation);
     audioIds.forEach((id, i) => {
         const start = i * 2;
         const time = now % T;
         let vol = 0;
         if (time >= start && time < start + 2) {
-            vol = Math.pow(Math.sin(((time - start) / 2) * Math.PI), 6); // Envelope agudo (lucidez)
+            vol = Math.pow(Math.sin(((time - start) / 2) * Math.PI), 8); // Lucidez absoluta
         }
-        if (gains[id]) gains[id].gain.setTargetAtTime(vol * 0.35, now, 0.15);
+        if (gains[id]) gains[id].gain.setTargetAtTime(vol * 0.3, now, 0.15);
     });
     requestAnimationFrame(animate);
 }
@@ -56,7 +55,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
         const val = e.target.value; e.target.value = '';
         const output = document.getElementById('output-stream');
         const seedBox = document.getElementById('seed-box');
-        output.textContent = "CONVERGINDO..."; 
+        output.textContent = "CONVERGINDO...";
         try {
             const res = await fetch('/api/convergence', {
                 method: 'POST',
@@ -66,7 +65,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
             const data = await res.json();
             seedBox.textContent = `SEED: ${data.seed} | UTC: ${data.utc}`;
             output.textContent = data.message;
-        } catch (err) { seedBox.textContent = "ERRO DE SINCRONIA - REDEPLOY NECESSÁRIO"; }
+        } catch (err) { seedBox.textContent = "ERRO DE SINCRONIA"; }
     }
 });
 window.initAll = initAll;
