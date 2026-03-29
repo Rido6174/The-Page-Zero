@@ -7,8 +7,7 @@ const pureFormulas = [
     "Χρόνος= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
     "Ω= S(1)=sin(2π)=0(∣∣+{0})", "(∣∣− {0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅cos(θ)",
     "Y (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅sin(θ)", "Z (θ, ϕ) ∩=Ksin(nϕ) sin(ϕ) (∣∣+ {0})",
-    "θ,ϕ∈[0,2π] (∣∣+{0})", "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "S (t) = A . sin(ωt+ϕ)",
-    "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
+    "θ,ϕ∈[0,2π] (∣∣+{0})", "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
 ];
 const cornerLeftValues = ["6894", "6404", "----", "5944", "5454", "4970"];
 const cornerRightValues = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
@@ -77,9 +76,7 @@ function updateClock() {
     const timeStr = `UTC ${h}:${m}`;
     document.getElementById('corner-top-right').textContent = timeStr;
     const sBox = document.getElementById('seed-box');
-    if (sBox && sBox.textContent.includes('XXXXXXXX')) {
-        sBox.textContent = `6174 - XXXXXXXX - ${timeStr}`;
-    }
+    if (sBox && sBox.textContent.includes('XXXXXXXX')) { sBox.textContent = `6174 - XXXXXXXX - ${timeStr}`; }
 }
 window.initAll = function() {
     if(isInitialized) return; 
@@ -91,20 +88,20 @@ window.initAll = function() {
     }, 4000);
     setInterval(updateClock, 1000);
     updateClock();
-    cycleFormulas();
-};
-function cycleFormulas() {
     const areas = ['f-left-top', 'f-left-bottom', 'f-right-top', 'f-right-bottom'];
-    areas.forEach(id => {
-        const el = document.getElementById(id);
-        const upd = () => {
+    areas.forEach((id, index) => {
+        const cycle = () => {
+            const el = document.getElementById(id);
             el.textContent = pureFormulas[Math.floor(Math.random() * pureFormulas.length)];
-            el.classList.add('visible'); setTimeout(() => el.classList.remove('visible'), 2000);
+            el.classList.add('visible');
+            setTimeout(() => { 
+                el.classList.remove('visible'); 
+                setTimeout(cycle, 1000 + Math.random() * 2000);
+            }, 4000);
         };
-        setTimeout(upd, Math.random() * 8000);
+        setTimeout(cycle, index * 1500);
     });
-    setTimeout(cycleFormulas, 10000);
-}
+};
 document.getElementById('user-input').addEventListener('keypress', async (e) => {
     if (e.key === 'Enter') {
         const val = e.target.value; e.target.value = '';
