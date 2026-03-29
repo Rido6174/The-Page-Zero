@@ -1,4 +1,4 @@
-:root { --bg: #000; --titanium: rgba(255,255,255,0.9); }
+:root { --bg: #000; --titanium: rgba(255,255,255,0.95); }
 * { box-sizing: border-box; cursor: crosshair; margin: 0; padding: 0; }
 body, html { 
     background: var(--bg); color: #fff; font-family: 'Courier New', monospace;
@@ -8,28 +8,33 @@ body, html {
     position: relative; width: 100vw; height: 100vh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-#geometry-core {
-    position: relative; width: 500px; height: 500px;
+#geometry-wrapper {
+    position: relative; width: 600px; height: 600px;
     display: flex; align-items: center; justify-content: center;
 }
-#hexagon-canvas { position: absolute; z-index: 1; filter: drop-shadow(0 0 40px rgba(255,255,255,0.15)); }
+#hexagon-canvas { position: absolute; z-index: 1; filter: drop-shadow(0 0 50px rgba(255,255,255,0.2)); }
 #zero-core { 
-    position: relative; z-index: 10; font-size: 4rem; letter-spacing: 20px; 
+    position: absolute; z-index: 10; font-size: 4.5rem; letter-spacing: 30px; 
     color: var(--titanium); font-weight: 300; pointer-events: none;
-    text-shadow: 0 0 30px rgba(255,255,255,0.7); /* Halo de Luz */
+    text-shadow: 0 0 35px rgba(255,255,255,0.8);
+    margin-left: 15px; 
 }
 #interface-overlay { 
-    position: absolute; bottom: 10%; width: 100%; 
+    position: absolute; bottom: 8%; width: 100%; 
     display: flex; flex-direction: column; align-items: center; z-index: 20; 
 }
-#seed-box { font-size: 0.6rem; color: #444; letter-spacing: 5px; margin-bottom: 10px; }
-#output-stream { height: 40px; font-size: 0.8rem; opacity: 0.4; text-align: center; margin-bottom: 20px; }
-.input-wrapper { width: 400px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+#seed-box { font-size: 0.6rem; color: #555; letter-spacing: 5px; margin-bottom: 15px; text-transform: uppercase; }
+#output-stream { 
+    height: 100px; width: 85%; max-width: 700px; font-size: 0.9rem; 
+    margin-bottom: 25px; opacity: 0.6; text-align: center; line-height: 1.6;
+    overflow-y: auto;
+}
+.input-field-wrapper { width: 450px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 5px; }
 input { 
     background: transparent; border: none; color: #fff; 
-    text-align: center; width: 100%; outline: none; letter-spacing: 8px; font-size: 1rem; padding: 10px;
+    text-align: center; width: 100%; outline: none; letter-spacing: 10px; font-size: 1.1rem;
 }
-footer { position: absolute; bottom: 30px; font-size: 0.5rem; opacity: 0.2; letter-spacing: 5px; text-align: center; }
-.flicker-text { position: absolute; top: 15%; animation: flick 5s infinite; letter-spacing: 20px; font-size: 0.7rem; }
-@keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.4; } 20%, 55% { opacity: 0.05; filter: blur(3px); } }
-.math-geo-label { position: absolute; bottom: 15px; right: 25px; font-size: 0.45rem; opacity: 0.15; }
+footer { position: absolute; bottom: 30px; font-size: 0.55rem; opacity: 0.2; letter-spacing: 6px; text-align: center; width: 100%; }
+.flicker-text { position: absolute; top: 12%; animation: flick 5s infinite; letter-spacing: 25px; font-size: 0.8rem; opacity: 0.5; }
+@keyframes flick { 0%, 18%, 22%, 53%, 100% { opacity: 0.5; } 20%, 55% { opacity: 0.05; filter: blur(4px); } }
+.math-geo-label { position: absolute; bottom: 15px; right: 30px; font-size: 0.45rem; opacity: 0.15; letter-spacing: 4px; }
