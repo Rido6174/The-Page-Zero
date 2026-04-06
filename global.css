@@ -34,8 +34,43 @@ input { background: transparent; border: none; color: #fff; text-align: center; 
 #seed-box { width: 550px; padding: 15px; background: var(--gold-meta); color: #000; text-align: center; font-size: 1.25rem; letter-spacing: 8px; font-weight: 900; border-radius: 2px; }
 footer { position: absolute; bottom: 30px; width: 100%; text-align: center; font-size: 1rem; letter-spacing: 6px; opacity: 0.35; pointer-events: none; }
 #triangle-cursor { position: fixed; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 16px solid #fff; pointer-events: none; z-index: 1000; transform: translate(-50%, -50%); }
-@media (max-width: 768px) { #site-title { font-size: 1.2rem; letter-spacing: 10px; }
-.input-group { flex-direction: column; width: 95%; gap: 10px; }
-.label { width: 100%; text-align: center; font-size: 0.6rem; }
-.input-box { width: 100%; }
-#hexagon-canvas { transform: scale(0.7); } 
+@media (max-width: 768px) {
+    #site-title { font-size: 1.1rem; letter-spacing: 8px; top: 2%; }
+    #site-subtitle { font-size: 0.6rem; letter-spacing: 5px; }
+    #horizon-interface { top: 10%; } 
+    #geometry-hub { 
+        transform: scale(0.55) translateY(-80px); 
+    }
+    #interface-overlay { 
+        bottom: 4%; 
+        gap: 12px; 
+    }
+    .input-group { 
+        flex-direction: column; 
+        width: 92%; 
+        gap: 6px; 
+    }
+    .label { 
+        width: 100%; 
+        text-align: centre; 
+        font-size: 0.5rem; 
+        letter-spacing: 1px;
+        opacity: 0.8;
+    }
+    .input-box { 
+        width: 100%; 
+        padding: 6px;
+        background: rgba(0,0,0,0.9);
+    }
+    input { 
+        font-size: 0.9rem; 
+        letter-spacing: 4px; 
+    }
+    #seed-box { 
+        font-size: 0.65rem; 
+        width: 100%; 
+        text-align: centre;
+        letter-spacing: 2px;
+    }
+    .formula-display { display: none; }
+}
