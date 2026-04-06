@@ -7,7 +7,6 @@ const pureFormulas = [
     "Χρόνος= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
     "Ω= S(1)=sin(2π)=0(∣∣+{0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ"
 ];
-
 const cornerLeft = ["6174", "Φ", "ZERO"];
 const cornerRight = ["UTC 00:00", "BUNKER", "ALPHA"];
 let audioCtx;
