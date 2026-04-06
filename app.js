@@ -1,3 +1,4 @@
+headers: { 'Content-Type': 'application/json' }
 const audioIds = ['freq-a6', 'freq-d4', 'freq-b1', 'freq-c7'];
 const pureFormulas = [
     "S (t) = sin (2πt), t ∈ [0,1]", "Ω = π. ∞", "S(t) = A . sin(ωt + φ)", 
