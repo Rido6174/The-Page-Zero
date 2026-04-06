@@ -5,111 +5,113 @@ const pureFormulas = [
     "y(t) = b* (t + sin(t) + e^(k*(t/2π)) * sin(t))", "D (k, r, t) = ρ(t)⋅[H(k,r)+H0(k)]⋅dtdB⋅Θ(ΔH (t))",
     "T= (∣∣− {0}) S(t)", "Αἰών =(∣∣−{0})S(t)∩= ρ + Χρόνος + Triskelion + Ω = ρ= S (0)=sin(0)=0",
     "Χρόνος= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
-    "Ω= S(1)=sin(2π)=0(∣∣+{0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ"
+    "Ω= S(1)=sin(2π)=0(∣∣+{0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅cos(θ)",
+    "Y (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅sin(θ)", "Z (θ, ϕ) ∩=Ksin(nϕ) sin(ϕ) (∣∣+ {0})",
+    "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
 ];
-const cornerLeft = ["6174", "Φ", "ZERO"];
-const cornerRight = ["BUNKER", "ALPHA", "RG-6174"];
-let audioCtx;
-const audios = {};
-const cursor = document.getElementById('triangle-cursor');
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
-const updateClock = () => {
-    const now = new Date();
-    const utc = now.toISOString().replace('T', ' ').split('.')[0];
-    const el = document.getElementById('corner-top-right');
-    if (el) el.textContent = utc;
-};
-const initAudio = () => {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        audioIds.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                audios[id] = audioCtx.createMediaElementSource(el);
-                const gainNode = audioCtx.createGain();
-                gainNode.gain.value = 0.4; 
-                audios[id].connect(gainNode).connect(audioCtx.destination);
-            }
-        });
+const cornerLeft = ["6404", "5944", "----", "5454", "6894", "4970"];
+const cornerRight = ["-720", "-490", "-230", "0", "+230", "+490", "+720"];
+let currentTrack = 0, canvas, ctx, mouseX = 0, mouseY = 0, rotation = 0;
+let isInitialized = false, chalkCanvas, chalkCtx;
+function initGeometry() {
+    canvas = document.getElementById('hexagon-canvas'); ctx = canvas.getContext('2d');
+    canvas.width = 750; canvas.height = 750;
+    chalkCanvas = document.getElementById('chalk-canvas'); chalkCtx = chalkCanvas.getContext('2d');
+    chalkCanvas.width = 250; chalkCanvas.height = 250;
+    window.addEventListener('mousemove', (e) => {
+        const cur = document.getElementById('triangle-cursor');
+        if(cur) { cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px'; }
+        const rect = canvas.getBoundingClientRect();
+        mouseX = (e.clientX - rect.left) - (rect.width / 2);
+        mouseY = (e.clientY - rect.top) - (rect.height / 2);
+    });
+}
+async function drawChalkStudies() {
+    const tris = [[{x:50,y:180},{x:200,y:180},{x:125,y:50}], [{x:30,y:160},{x:140,y:190},{x:90,y:40}], [{x:40,y:40},{x:40,y:180},{x:170,y:180}], [{x:90,y:20},{x:40,y:160},{x:180,y:140}]];
+    for (let t of tris) {
+        if(!chalkCtx) return;
+        chalkCtx.clearRect(0,0,250,250); chalkCtx.strokeStyle = "rgba(255,255,255,0.45)";
+        chalkCtx.setLineDash([4,4]); chalkCtx.lineWidth = 1.3;
+        for (let i=0; i<3; i++) {
+            chalkCtx.beginPath(); chalkCtx.moveTo(t[i].x, t[i].y);
+            chalkCtx.lineTo(t[(i+1)%3].x, t[(i+1)%3].y); chalkCtx.stroke();
+            await new Promise(r => setTimeout(r, 650));
+        }
+        await new Promise(r => setTimeout(r, 3000));
     }
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-};
-const startSequencer = () => {
-    let count = 0;
+    chalkCtx.clearRect(0,0,250,250); chalkCtx.setLineDash([]); chalkCtx.strokeStyle="#fff"; chalkCtx.shadowBlur=15; chalkCtx.shadowColor="#fff";
+    chalkCtx.beginPath(); chalkCtx.moveTo(125,50); chalkCtx.lineTo(50,200); chalkCtx.lineTo(200,200); chalkCtx.closePath(); chalkCtx.stroke();
+    chalkCtx.font="14px 'Architects Daughter'"; chalkCtx.fillStyle="#fff";
+    chalkCtx.fillText("k1", 120, 40); chalkCtx.fillText("k2", 30, 215); chalkCtx.fillText("k3", 205, 215);
+    await new Promise(r => setTimeout(r, 4000)); drawChalkStudies();
+}
+function drawHex(scale, rot, intensity) {
+    if(!ctx) return;
+    const x = canvas.width/2, y = canvas.height/2, size = 230 * scale;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < 6; i++) {
+        const a1 = (i * Math.PI / 3) + rot, a2 = ((i+1) * Math.PI / 3) + rot;
+        ctx.beginPath(); ctx.moveTo(x + size * Math.cos(a1), y + size * Math.sin(a1));
+        ctx.lineTo(x + size * Math.cos(a2), y + size * Math.sin(a2));
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.25 + intensity})`;
+        ctx.lineWidth = 1.6 + (intensity * 6); ctx.stroke();
+    }
+}
+function animate() {
+    const now = Date.now() / 1000;
+    const pulse = (Math.sin(2 * Math.PI * now / 8) + 1) / 2;
+    rotation += 0.0008;
+    const dist = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
+    const highlight = (dist > 190 && dist < 280) ? 0.9 : 0;
+    const tube = document.getElementById('light-tube');
+    if(tube) tube.style.opacity = (Math.abs(mouseX) < 35) ? "1" : "0.5";
+    drawHex(1 + pulse * 0.08, rotation, highlight);
+    requestAnimationFrame(animate);
+}
+function playSequencer() {
+    const audio = document.getElementById(audioIds[currentTrack]);
+    if (audio) { 
+        audio.play().catch(e => {}); 
+        audio.onended = () => { 
+            currentTrack = (currentTrack + 1) % audioIds.length; 
+            playSequencer(); 
+        }; 
+    }
+}
+function updateClock() {
+    const now = new Date();
+    const h = String(now.getUTCHours()).padStart(2,'0'), m = String(now.getUTCMinutes()).padStart(2,'0');
+    const timeStr = `UTC ${h}:${m}`;
+    document.getElementById('corner-top-right').textContent = timeStr;
+    const sBox = document.getElementById('seed-box');
+    if (sBox && sBox.textContent.includes('XXXXXXXX')) { sBox.textContent = `6174 - XXXXXXXX - ${timeStr}`; }
+}
+
+window.initAll = function() {
+    if(isInitialized) return; isInitialized = true;
+    initGeometry(); animate(); playSequencer(); drawChalkStudies();
     setInterval(() => {
-        const id = audioIds[count % audioIds.length];
-        const el = document.getElementById(id);
-        if (el) {
-            el.currentTime = 0;
-            el.play().catch(() => {});
-        }
-        count++;
-    }, 4000); 
-};
-const drawChalkStudies = () => {
-    const canvas = document.getElementById('hexagon-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = 800; canvas.height = 800;
-    const drawHex = (size, alpha, rotate) => {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
-        ctx.lineWidth = 1;
-        for (let i = 0; i < 6; i++) {
-            const angle = (Math.PI / 3) * i + rotate;
-            const x = 400 + size * Math.cos(angle);
-            const y = 400 + size * Math.sin(angle);
-            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.stroke();
-    };
-    const animate = () => {
-        ctx.clearRect(0, 0, 800, 800);
-        const time = Date.now() * 0.0005;
-        for (let i = 0; i < 8; i++) {
-            const size = 180 + i * 25 + Math.sin(time + i) * 15;
-            drawHex(size, 0.05 + (i * 0.02), time * 0.1 * (i % 2 === 0 ? 1 : -1));
-        }
-        requestAnimationFrame(animate);
-    };
-    animate();
-};
-window.initAll = () => {
-    initAudio();
-    startSequencer();
-    drawChalkStudies();
-    setInterval(() => {
-        const ctl = document.getElementById('corner-top-left');
-        const cbr = document.getElementById('corner-bottom-right');
-        if (ctl) ctl.textContent = cornerLeft[Math.floor(Date.now()/5000) % cornerLeft.length];
-        if (cbr) cbr.textContent = cornerRight[Math.floor(Date.now()/5000) % cornerRight.length];
-    }, 5000);
+        document.getElementById('corner-top-left').textContent = cornerLeft[Math.floor(Date.now()/4000) % cornerLeft.length];
+        document.getElementById('corner-bottom-right').textContent = cornerRight[Math.floor(Date.now()/4000) % cornerRight.length];
+    }, 4000);
     setInterval(updateClock, 1000);
     updateClock();
     const areas = ['f-left-top', 'f-left-bottom', 'f-right-top', 'f-right-bottom'];
     areas.forEach((id, index) => {
         const cycle = () => {
             const el = document.getElementById(id);
-            if (el) {
+            if(el) {
                 el.textContent = pureFormulas[Math.floor(Math.random() * pureFormulas.length)];
                 el.classList.add('visible');
-                setTimeout(() => { 
-                    el.classList.remove('visible'); 
-                    setTimeout(cycle, 2000 + Math.random() * 3000); 
-                }, 5000);
+                setTimeout(() => { el.classList.remove('visible'); setTimeout(cycle, 1500 + Math.random() * 2000); }, 4000);
             }
         };
-        setTimeout(cycle, index * 1500);
+        setTimeout(cycle, index * 1000);
     });
 };
 document.getElementById('user-input').addEventListener('keypress', async (e) => {
     if (e.key === 'Enter') {
-        const val = e.target.value; 
-        e.target.value = '';
+        const val = e.target.value; e.target.value = '';
         try {
             const res = await fetch('/api/convergence', { 
                 method: 'POST', 
@@ -117,11 +119,9 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
                 body: JSON.stringify({ prompt: val }) 
             });
             const data = await res.json();
-            if (data.seed) {
-                document.getElementById('seed-box').textContent = `${data.utc} | ${data.seed}`;
-            }
-        } catch (err) {
-            console.error("Erro na convergência:", err);
-        }
+            const now = new Date();
+            const timeStr = `UTC ${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')}`;
+            document.getElementById('seed-box').textContent = `${data.seed} - ${timeStr}`;
+        } catch (err) { console.error(err); }
     }
 });
