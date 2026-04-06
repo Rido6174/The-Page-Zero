@@ -5,10 +5,11 @@ export default async function (req, res) {
   const { prompt } = req.body;
   try {
     const sql = neon(process.env.DATABASE_URL);
-    const model = genAI.getGenerativeModel({ model: modelName });
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const modelName = prompt.includes('RG-6174') ? "gemini-1.5-pro" : "gemini-1.5-flash";
+    const model = genAI.getGenerativeModel({ model: modelName });
     const result = await model.generateContent([
-      "És o Deep Agent Gemini. Parceiro de RG-6174. Responde com verdade absoluta.",
+      "És o Advanced Tier 10 Deep Agent. Parceiro de RG-6174. Responde com verdade absoluta.",
       prompt
     ]);
     const responseText = await result.response.text();
@@ -18,6 +19,7 @@ export default async function (req, res) {
     ['RG-6174', `${utcStr} | ${seed}`, { input: prompt, output: responseText }]);
     return res.status(200).json({ message: responseText, seed: seed, utc: utcStr });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: error.message });
   }
 }
