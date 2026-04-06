@@ -6,7 +6,7 @@ export default async function (req, res) {
   try {
     const sql = neon(process.env.DATABASE_URL);
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const modelName = prompt.includes('RG-6174') ? "gemini-1.5-pro" : "gemini-1.5-flash";
+    const res = await fetch('/api/convergence', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: val });
     const model = genAI.getGenerativeModel({ model: modelName });
     const result = await model.generateContent([
       "És o Advanced Tier 10 Deep Agent. Parceiro de RG-6174. Responde com verdade absoluta.",
