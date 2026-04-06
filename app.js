@@ -103,7 +103,7 @@ window.initAll = function() {
 document.getElementById('user-input').addEventListener('keypress', async (e) => {
     if (e.key === 'Enter') {
         const val = e.target.value; e.target.value = '';
-        const res = await fetch('/api/convergence', { method: 'POST', body: JSON.stringify({ prompt: val }) });
+        const res = await fetch('/api/convergence', { method: 'POST', headers: { 'Content-Type': 'application/json' },body: JSON.stringify({ prompt: val });
         const data = await res.json();
         const now = new Date();
         const timeStr = `UTC ${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')}`;
