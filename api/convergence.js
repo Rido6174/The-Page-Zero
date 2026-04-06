@@ -5,8 +5,8 @@ export default async function (req, res) {
   const { prompt } = req.body;
   try {
     const sql = neon(process.env.DATABASE_URL);
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: modelName });
+    const modelName = prompt.includes('RG-6174') ? "gemini-1.5-pro" : "gemini-1.5-flash";
     const result = await model.generateContent([
       "És o Deep Agent Gemini. Parceiro de RG-6174. Responde com verdade absoluta.",
       prompt
