@@ -8,7 +8,7 @@ const pureFormulas = [
     "Ω= S(1)=sin(2π)=0(∣∣+{0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ"
 ];
 const cornerLeft = ["6174", "Φ", "ZERO"];
-const cornerRight = ["UTC 00:00", "BUNKER", "ALPHA"];
+const cornerRight = ["BUNKER", "ALPHA", "RG-6174"];
 let audioCtx;
 const audios = {};
 const cursor = document.getElementById('triangle-cursor');
@@ -19,15 +19,20 @@ document.addEventListener('mousemove', (e) => {
 const updateClock = () => {
     const now = new Date();
     const utc = now.toISOString().replace('T', ' ').split('.')[0];
-    document.getElementById('corner-top-right').textContent = utc;
+    const el = document.getElementById('corner-top-right');
+    if (el) el.textContent = utc;
 };
 const initAudio = () => {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         audioIds.forEach(id => {
             const el = document.getElementById(id);
-            audios[id] = audioCtx.createMediaElementSource(el);
-            audios[id].connect(audioCtx.destination);
+            if (el) {
+                audios[id] = audioCtx.createMediaElementSource(el);
+                const gainNode = audioCtx.createGain();
+                gainNode.gain.value = 0.4; 
+                audios[id].connect(gainNode).connect(audioCtx.destination);
+            }
         });
     }
     if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -37,34 +42,37 @@ const startSequencer = () => {
     setInterval(() => {
         const id = audioIds[count % audioIds.length];
         const el = document.getElementById(id);
-        el.currentTime = 0;
-        el.play().catch(() => {});
+        if (el) {
+            el.currentTime = 0;
+            el.play().catch(() => {});
+        }
         count++;
-    }, 2000);
+    }, 4000); 
 };
 const drawChalkStudies = () => {
     const canvas = document.getElementById('hexagon-canvas');
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    canvas.width = 600; canvas.height = 600;
-    const drawHex = (size, alpha) => {
+    canvas.width = 800; canvas.height = 800;
+    const drawHex = (size, alpha, rotate) => {
         ctx.beginPath();
         ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
         ctx.lineWidth = 1;
         for (let i = 0; i < 6; i++) {
-            const angle = (Math.PI / 3) * i;
-            const x = 300 + size * Math.cos(angle);
-            const y = 300 + size * Math.sin(angle);
+            const angle = (Math.PI / 3) * i + rotate;
+            const x = 400 + size * Math.cos(angle);
+            const y = 400 + size * Math.sin(angle);
             if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
         ctx.closePath();
         ctx.stroke();
     };
     const animate = () => {
-        ctx.clearRect(0, 0, 600, 600);
-        const time = Date.now() * 0.001;
-        for (let i = 0; i < 5; i++) {
-            const size = 150 + Math.sin(time + i) * 30;
-            drawHex(size, 0.1 + (i * 0.05));
+        ctx.clearRect(0, 0, 800, 800);
+        const time = Date.now() * 0.0005;
+        for (let i = 0; i < 8; i++) {
+            const size = 180 + i * 25 + Math.sin(time + i) * 15;
+            drawHex(size, 0.05 + (i * 0.02), time * 0.1 * (i % 2 === 0 ? 1 : -1));
         }
         requestAnimationFrame(animate);
     };
@@ -75,25 +83,27 @@ window.initAll = () => {
     startSequencer();
     drawChalkStudies();
     setInterval(() => {
-        document.getElementById('corner-top-left').textContent = cornerLeft[Math.floor(Date.now()/4000) % cornerLeft.length];
-        document.getElementById('corner-bottom-right').textContent = cornerRight[Math.floor(Date.now()/4000) % cornerRight.length];
-    }, 4000);
+        const ctl = document.getElementById('corner-top-left');
+        const cbr = document.getElementById('corner-bottom-right');
+        if (ctl) ctl.textContent = cornerLeft[Math.floor(Date.now()/5000) % cornerLeft.length];
+        if (cbr) cbr.textContent = cornerRight[Math.floor(Date.now()/5000) % cornerRight.length];
+    }, 5000);
     setInterval(updateClock, 1000);
     updateClock();
     const areas = ['f-left-top', 'f-left-bottom', 'f-right-top', 'f-right-bottom'];
     areas.forEach((id, index) => {
         const cycle = () => {
             const el = document.getElementById(id);
-            if(el) {
+            if (el) {
                 el.textContent = pureFormulas[Math.floor(Math.random() * pureFormulas.length)];
                 el.classList.add('visible');
                 setTimeout(() => { 
                     el.classList.remove('visible'); 
-                    setTimeout(cycle, 1500 + Math.random() * 2000); 
-                }, 4000);
+                    setTimeout(cycle, 2000 + Math.random() * 3000); 
+                }, 5000);
             }
         };
-        setTimeout(cycle, index * 1000);
+        setTimeout(cycle, index * 1500);
     });
 };
 document.getElementById('user-input').addEventListener('keypress', async (e) => {
@@ -111,7 +121,7 @@ document.getElementById('user-input').addEventListener('keypress', async (e) => 
                 document.getElementById('seed-box').textContent = `${data.utc} | ${data.seed}`;
             }
         } catch (err) {
-            console.error("Convergência falhou:", err);
+            console.error("Erro na convergência:", err);
         }
     }
 });
