@@ -4,7 +4,7 @@ const pureFormulas = [
     "R(V) = K . sin(n . V)  [n=6]", "x(t) = a* (t + sin(t) + e^(k*(t/2π)) * cos(t))",
     "y(t) = b* (t + sin(t) + e^(k*(t/2π)) * sin(t))", "D (k, r, t) = ρ(t)⋅[H(k,r)+H0(k)]⋅dtdB⋅Θ(ΔH (t))",
     "T= (∣∣− {0}) S(t)", "Αἰών =(∣∣−{0})S(t)∩= ρ + Χρόνος + Triskelion + Ω = ρ= S (0)=sin(0)=0",
-    "Χρόνος= S (0.25)=sin(← 2π→)=1", "Καιρός= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
+    "Χρόνος= S (0.25)=sin(← 2π→)=1", "Κaisρóς= S (0.5)=sin(π)=0", "Triskelion= S (0.75) = sin (← 23π →) =−1",
     "Ω= S(1)=sin(2π)=0(∣∣+{0})", "X (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅cos(θ)",
     "Y (θ, ϕ) ∩=←(R+Ksin(nϕ) cos(ϕ)→) ⋅sin(θ)", "Z (θ, ϕ) ∩=Ksin(nϕ) sin(ϕ) (∣∣+ {0})",
     "∀Xi ∈ R, ∃ Xj, ∈ R : Xj = −Xi", "K1 = ± 230", "K2 = ± 720", "K3 = ± 490"
@@ -72,10 +72,7 @@ function playSequencer() {
     const audio = document.getElementById(audioIds[currentTrack]);
     if (audio) { 
         audio.play().catch(e => {}); 
-        audio.onended = () => { 
-            currentTrack = (currentTrack + 1) % audioIds.length; 
-            playSequencer(); 
-        }; 
+        audio.onended = () => { currentTrack = (currentTrack + 1) % audioIds.length; playSequencer(); }; 
     }
 }
 function updateClock() {
@@ -86,7 +83,6 @@ function updateClock() {
     const sBox = document.getElementById('seed-box');
     if (sBox && sBox.textContent.includes('XXXXXXXX')) { sBox.textContent = `6174 - XXXXXXXX - ${timeStr}`; }
 }
-
 window.initAll = function() {
     if(isInitialized) return; isInitialized = true;
     initGeometry(); animate(); playSequencer(); drawChalkStudies();
