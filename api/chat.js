@@ -11,8 +11,6 @@ const s3Client = new S3Client({
     },
 });
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
 export default async function handler(req, res) {
     const sql = neon(process.env.DATABASE_URL);
     const { seed, message, file } = req.body;
@@ -28,7 +26,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ response: "Codex Injected." });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent(message);
     const aiResponse = result.response.text();
 
